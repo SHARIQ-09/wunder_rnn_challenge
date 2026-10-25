@@ -1,0 +1,16 @@
+# Data & environment
+datasets/
+*.parquet
+wnn_env/
+.venv/
+__pycache__/
+*.pyc
+
+# Heavy / scratch files
+scratch/
+checkpoints_test/
+checkpoints_h128/
+
+# Submission archives (keep code and ONNX tracked if needed, ignore large zip archives)
+*.zip
+!submission_best_modelsoup/*.zip
