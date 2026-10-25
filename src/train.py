@@ -115,6 +115,18 @@ def parse_args() -> argparse.Namespace:
         help="Filename for best checkpoint (default: best_model.pt)",
     )
     parser.add_argument(
+        "--submission_dir",
+        type=str,
+        default=str(ROOT_DIR / "submission"),
+        help="Directory to place solution.py and exported model.onnx",
+    )
+    parser.add_argument(
+        "--submission_zip",
+        type=str,
+        default=str(ROOT_DIR / "submission.zip"),
+        help="Path for packaged submission zip archive",
+    )
+    parser.add_argument(
         "--device",
         type=str,
         default="cuda" if torch.cuda.is_available() else "cpu",
@@ -509,13 +521,22 @@ def main():
 
     # 5. Automatically export best model to ONNX and package submission.zip
     try:
+        import shutil
         from src.export_onnx import export_onnx
         from src.package_submission import package_submission
-        onnx_path = ROOT_DIR / "submission" / "model.onnx"
+
+        sub_dir = Path(args.submission_dir)
+        sub_dir.mkdir(parents=True, exist_ok=True)
+        sol_dest = sub_dir / "solution.py"
+        sol_src = ROOT_DIR / "submission" / "solution.py"
+        if sol_src != sol_dest and sol_src.exists():
+            shutil.copy(sol_src, sol_dest)
+
+        onnx_path = sub_dir / "model.onnx"
         print(f"\n[AUTO-EXPORT] Exporting best model to ONNX: {onnx_path}...", flush=True)
         export_onnx(str(best_path), str(onnx_path))
-        print("\n[AUTO-PACKAGE] Packaging verified submission.zip...", flush=True)
-        package_submission()
+        print(f"\n[AUTO-PACKAGE] Packaging verified submission archive: {args.submission_zip}...", flush=True)
+        package_submission(submission_dir=str(sub_dir), output_zip=str(args.submission_zip))
     except Exception as e:
         print(f"[WARNING] Auto-export/packaging encountered: {e}", flush=True)
 
