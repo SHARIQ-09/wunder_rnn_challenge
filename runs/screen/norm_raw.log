@@ -1,0 +1,5 @@
+[100/400] 7.5s
+[200/400] 12.9s
+[300/400] 19.3s
+[400/400] 24.8s
+Saved datasets/norm_stats_raw.npz: rows=8,000,000, std min=3.515e-02 max=2.888e+00

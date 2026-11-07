@@ -1,0 +1,84 @@
+============================================================
+[TRAINING] Wunder RNN Challenge -- Scaled Training Pipeline
+============================================================
+Device         : cuda (NVIDIA GeForce RTX 3070 Laptop GPU)
+Mixed Precision: True (fp16)
+Batch Size     : 8 sequences in parallel
+Chunk Size     : 2048 timesteps per BPTT unroll
+Input Dim      : 144 raw features
+GRU Capacity   : 3 layers x 128 hidden units (Residuals + LayerNorm)
+Learning Rate  : 0.001 (AdamW + Cosine Decay)
+Loss Function  : HybridLoss (MSE: 1.0, Pearson: 1.5)
+Save Path      : runs\screen\h128x3
+============================================================
+Training Set   : 2,500 sequences available
+Validation Set : 1,873 sequences available (150 used per epoch)
+Model Parameters: 333,826 (~1.27 MB f32)
+MoE Gated Experts: False
+[NORM] Installed feature standardization (fold_into_input=False, clip=0.0)
+
+Starting training loop...
+
+--- Epoch 1/2 ---
+  Epoch [1] Batch [25/313] Loss: 2.7031 (MSE: 1.5984, PLoss: 0.7365) (8.9 seq/s)
+  Epoch [1] Batch [50/313] Loss: 2.5762 (MSE: 1.5298, PLoss: 0.6976) (9.5 seq/s)
+  Epoch [1] Batch [75/313] Loss: 2.5228 (MSE: 1.5031, PLoss: 0.6799) (9.7 seq/s)
+  Epoch [1] Batch [100/313] Loss: 2.5020 (MSE: 1.4940, PLoss: 0.6720) (9.8 seq/s)
+  Epoch [1] Batch [125/313] Loss: 2.4873 (MSE: 1.4863, PLoss: 0.6673) (9.9 seq/s)
+  Epoch [1] Batch [150/313] Loss: 2.4812 (MSE: 1.4841, PLoss: 0.6647) (9.9 seq/s)
+  Epoch [1] Batch [175/313] Loss: 2.4628 (MSE: 1.4737, PLoss: 0.6594) (10.0 seq/s)
+  Epoch [1] Batch [200/313] Loss: 2.4481 (MSE: 1.4645, PLoss: 0.6558) (10.0 seq/s)
+  Epoch [1] Batch [225/313] Loss: 2.4393 (MSE: 1.4602, PLoss: 0.6527) (10.0 seq/s)
+  Epoch [1] Batch [250/313] Loss: 2.4354 (MSE: 1.4600, PLoss: 0.6503) (10.0 seq/s)
+  Epoch [1] Batch [275/313] Loss: 2.4298 (MSE: 1.4564, PLoss: 0.6490) (10.0 seq/s)
+  Epoch [1] Batch [300/313] Loss: 2.4231 (MSE: 1.4547, PLoss: 0.6456) (10.0 seq/s)
+  Epoch [1] Batch [313/313] Loss: 2.4217 (MSE: 1.4531, PLoss: 0.6457) (5.0 seq/s)
+Evaluating validation metric (on 150 sequences)...
+Epoch 1 Results:
+  Train Loss: 2.4217 (MSE: 1.4531, PLoss: 0.6457, time: 248.9s)
+  Val WP    : 0.6780 (t0: 0.6973, t1: 0.6587, time: 16.5s)
+  Current LR: 0.000525
+  [BEST] New best validation score! Saved to: runs\screen\h128x3\best.pt
+
+--- Epoch 2/2 ---
+  Epoch [2] Batch [25/313] Loss: 2.2712 (MSE: 1.3667, PLoss: 0.6030) (10.1 seq/s)
+  Epoch [2] Batch [50/313] Loss: 2.3414 (MSE: 1.4126, PLoss: 0.6192) (10.2 seq/s)
+  Epoch [2] Batch [75/313] Loss: 2.3389 (MSE: 1.4151, PLoss: 0.6159) (10.2 seq/s)
+  Epoch [2] Batch [100/313] Loss: 2.3177 (MSE: 1.4041, PLoss: 0.6091) (10.1 seq/s)
+  Epoch [2] Batch [125/313] Loss: 2.3310 (MSE: 1.4130, PLoss: 0.6120) (10.1 seq/s)
+  Epoch [2] Batch [150/313] Loss: 2.3179 (MSE: 1.4060, PLoss: 0.6079) (10.1 seq/s)
+  Epoch [2] Batch [175/313] Loss: 2.2974 (MSE: 1.3942, PLoss: 0.6022) (10.1 seq/s)
+  Epoch [2] Batch [200/313] Loss: 2.2904 (MSE: 1.3895, PLoss: 0.6006) (10.1 seq/s)
+  Epoch [2] Batch [225/313] Loss: 2.2879 (MSE: 1.3876, PLoss: 0.6002) (10.1 seq/s)
+  Epoch [2] Batch [250/313] Loss: 2.2898 (MSE: 1.3885, PLoss: 0.6009) (10.1 seq/s)
+  Epoch [2] Batch [275/313] Loss: 2.2853 (MSE: 1.3858, PLoss: 0.5997) (10.1 seq/s)
+  Epoch [2] Batch [300/313] Loss: 2.2870 (MSE: 1.3865, PLoss: 0.6003) (10.2 seq/s)
+  Epoch [2] Batch [313/313] Loss: 2.2893 (MSE: 1.3894, PLoss: 0.5999) (5.1 seq/s)
+Evaluating validation metric (on 150 sequences)...
+Epoch 2 Results:
+  Train Loss: 2.2893 (MSE: 1.3894, PLoss: 0.5999, time: 246.0s)
+  Val WP    : 0.6984 (t0: 0.7176, t1: 0.6792, time: 16.0s)
+  Current LR: 0.000050
+  [BEST] New best validation score! Saved to: runs\screen\h128x3\best.pt
+
+============================================================
+Computing Stochastic Weight Averaged (SWA) Ensemble...
+SWA Ensemble WP on 150-seq subset: 0.6948 (t0: 0.7164, t1: 0.6732) vs Best Epoch: 0.6984
+  [INFO] Single best checkpoint retained.
+
+============================================================
+Training Complete! Final Best Validation WP: 0.6984
+Best checkpoint saved at: runs\screen\h128x3\best.pt
+============================================================
+
+[AUTO-EXPORT] Exporting best model to ONNX: runs\screen\h128x3\sub\model.onnx...
+Loading checkpoint from: runs\screen\h128x3\best.pt
+Instantiating ScaledWunderGRU:
+  Input Dim  : 144
+  Hidden Dim : 128
+  Num Layers : 3
+  Use MoE    : False
+Exporting to ONNX: runs\screen\h128x3\sub\model.onnx (Opset 17)...
+E:\wnn_starter_pack\wnn_connectome_starterpack\src\model.py:173: TracerWarning: Converting a tensor to a Python float might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  if float(self.norm_clip) > 0:
+[WARNING] Auto-export/packaging encountered: Expected hidden size (1, tensor(1), 128), got [tensor(0), tensor(1), tensor(128)]

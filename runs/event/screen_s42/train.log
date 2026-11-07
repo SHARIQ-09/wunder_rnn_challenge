@@ -1,0 +1,6 @@
+norm stats 17s | params 290,706 | train seqs 2500
+Epoch 1/2  train loss 2.1149  (435s)
+  Val WP    : 0.6362 (t0: 0.6063, t1: 0.6661)
+Epoch 2/2  train loss 2.0030  (464s)
+  Val WP    : 0.6480 (t0: 0.6232, t1: 0.6729)
+done, best val 0.6480

@@ -1,0 +1,3 @@
+checkpoints_branch80_s21/best.pt [raw_ev_ema]  FULL-VALID WP=0.682431 t0=0.677717 t1=0.687145 rows=3528273
+checkpoints_branch80_s22/best.pt [raw_ev_ema]  FULL-VALID WP=0.682263 t0=0.677841 t1=0.686685 rows=3528273
+checkpoints_branch80_v144_s31/best.pt [v144]  FULL-VALID WP=0.681729 t0=0.677136 t1=0.686321 rows=3528273

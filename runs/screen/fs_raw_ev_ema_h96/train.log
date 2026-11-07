@@ -1,0 +1,23 @@
+============================================================
+[TRAINING] Wunder RNN Challenge -- Scaled Training Pipeline
+============================================================
+Device         : cuda (NVIDIA GeForce RTX 3070 Laptop GPU)
+Mixed Precision: True (fp16)
+Batch Size     : 8 sequences in parallel
+Chunk Size     : 2048 timesteps per BPTT unroll
+Input Dim      : 456 raw features
+GRU Capacity   : 2 layers x 96 hidden units (Residuals + LayerNorm)
+Learning Rate  : 0.001 (AdamW + Cosine Decay)
+Loss Function  : HybridLoss (MSE: 1.0, Pearson: 1.0)
+Save Path      : runs\screen\fs_raw_ev_ema_h96
+============================================================
+Training Set   : 2,500 sequences available
+Validation Set : 1,873 sequences available (150 used per epoch)
+Model Parameters: 165,890 (~0.63 MB f32)
+MoE Gated Experts: False
+[NORM] Installed feature standardization (fold_into_input=False, clip=0.0)
+
+Starting training loop...
+
+--- Epoch 1/2 ---
+  Epoch [1] Batch [25/313] Loss: 2.2377 (MSE: 1.5397, PLoss: 0.6979) (3.6 seq/s)

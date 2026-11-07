@@ -1,0 +1,1 @@
+checkpoints_cls80_s41/best.pt [raw_ev_ema]  FULL-VALID WP=0.682918 t0=0.678330 t1=0.687506 rows=3528273

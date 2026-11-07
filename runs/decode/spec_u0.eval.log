@@ -1,0 +1,14 @@
+unit 0.6569: B 0.42726  S 0.42713  A+B 0.43232  A+S 0.43301  A+Br 0.43498  A+Br+S 0.43608
+unit 0.2413: B 0.76303  S 0.76221  A+B 0.76749  A+S 0.76738  A+Br 0.76923  A+Br+S 0.76949
+unit 0.4686: B 0.72679  S 0.72224  A+B 0.73015  A+S 0.72853  A+Br 0.73093  A+Br+S 0.73083
+unit 0.1254: B 0.79482  S 0.79332  A+B 0.79915  A+S 0.79866  A+Br 0.79843  A+Br+S 0.79899
+detector on valid: tp 696 fp 121 fn 1 tn 1055
+global B: 0.680939
+global A+B: 0.684450
+global A+Br: 0.685330
+global B->S true: 0.680946
+global A+B->A+S true: 0.684677
+global A+Br->A+S true: 0.684797
+global A+Br->A+S det: 0.684586
+global A+Br->A+Br+S true: 0.685688
+global A+Br->A+Br+S det: 0.685664

@@ -1,0 +1,108 @@
+============================================================
+[TRAINING] Wunder RNN Challenge -- Scaled Training Pipeline
+============================================================
+Device         : cuda (NVIDIA GeForce RTX 3070 Laptop GPU)
+Mixed Precision: True (fp16)
+Batch Size     : 8 sequences in parallel
+Chunk Size     : 2048 timesteps per BPTT unroll
+Input Dim      : 144 raw features
+GRU Capacity   : 2 layers x 192 hidden units (Residuals + LayerNorm)
+Learning Rate  : 0.001 (AdamW + Cosine Decay)
+Loss Function  : HybridLoss (MSE: 1.0, Pearson: 1.5)
+Save Path      : runs\screen\h192x2
+============================================================
+Training Set   : 2,500 sequences available
+Validation Set : 1,873 sequences available (150 used per epoch)
+Model Parameters: 511,490 (~1.95 MB f32)
+MoE Gated Experts: False
+[NORM] Installed feature standardization (fold_into_input=False, clip=0.0)
+
+Starting training loop...
+
+--- Epoch 1/2 ---
+  Epoch [1] Batch [25/313] Loss: 2.7064 (MSE: 1.6038, PLoss: 0.7351) (5.0 seq/s)
+  Epoch [1] Batch [50/313] Loss: 2.5824 (MSE: 1.5352, PLoss: 0.6981) (5.2 seq/s)
+  Epoch [1] Batch [75/313] Loss: 2.5262 (MSE: 1.5061, PLoss: 0.6801) (5.3 seq/s)
+  Epoch [1] Batch [100/313] Loss: 2.5055 (MSE: 1.4968, PLoss: 0.6725) (5.3 seq/s)
+  Epoch [1] Batch [125/313] Loss: 2.4924 (MSE: 1.4897, PLoss: 0.6685) (5.4 seq/s)
+  Epoch [1] Batch [150/313] Loss: 2.4870 (MSE: 1.4877, PLoss: 0.6662) (5.4 seq/s)
+  Epoch [1] Batch [175/313] Loss: 2.4684 (MSE: 1.4770, PLoss: 0.6609) (5.4 seq/s)
+  Epoch [1] Batch [200/313] Loss: 2.4548 (MSE: 1.4683, PLoss: 0.6577) (5.4 seq/s)
+  Epoch [1] Batch [225/313] Loss: 2.4452 (MSE: 1.4634, PLoss: 0.6545) (5.4 seq/s)
+  Epoch [1] Batch [250/313] Loss: 2.4415 (MSE: 1.4632, PLoss: 0.6522) (5.4 seq/s)
+  Epoch [1] Batch [275/313] Loss: 2.4356 (MSE: 1.4594, PLoss: 0.6508) (5.4 seq/s)
+  Epoch [1] Batch [300/313] Loss: 2.4288 (MSE: 1.4577, PLoss: 0.6474) (5.4 seq/s)
+  Epoch [1] Batch [313/313] Loss: 2.4279 (MSE: 1.4564, PLoss: 0.6477) (2.7 seq/s)
+Evaluating validation metric (on 150 sequences)...
+Epoch 1 Results:
+  Train Loss: 2.4279 (MSE: 1.4564, PLoss: 0.6477, time: 460.2s)
+  Val WP    : 0.6770 (t0: 0.6975, t1: 0.6565, time: 55.5s)
+  Current LR: 0.000525
+  [BEST] New best validation score! Saved to: runs\screen\h192x2\best.pt
+
+--- Epoch 2/2 ---
+  Epoch [2] Batch [25/313] Loss: 2.2755 (MSE: 1.3685, PLoss: 0.6047) (5.3 seq/s)
+  Epoch [2] Batch [50/313] Loss: 2.3412 (MSE: 1.4124, PLoss: 0.6192) (5.4 seq/s)
+  Epoch [2] Batch [75/313] Loss: 2.3381 (MSE: 1.4147, PLoss: 0.6156) (5.4 seq/s)
+  Epoch [2] Batch [100/313] Loss: 2.3167 (MSE: 1.4035, PLoss: 0.6088) (5.4 seq/s)
+  Epoch [2] Batch [125/313] Loss: 2.3309 (MSE: 1.4128, PLoss: 0.6121) (5.4 seq/s)
+  Epoch [2] Batch [150/313] Loss: 2.3173 (MSE: 1.4055, PLoss: 0.6079) (5.4 seq/s)
+  Epoch [2] Batch [175/313] Loss: 2.2977 (MSE: 1.3940, PLoss: 0.6024) (5.5 seq/s)
+  Epoch [2] Batch [200/313] Loss: 2.2914 (MSE: 1.3897, PLoss: 0.6011) (5.4 seq/s)
+  Epoch [2] Batch [225/313] Loss: 2.2885 (MSE: 1.3875, PLoss: 0.6006) (5.5 seq/s)
+  Epoch [2] Batch [250/313] Loss: 2.2914 (MSE: 1.3890, PLoss: 0.6016) (5.5 seq/s)
+  Epoch [2] Batch [275/313] Loss: 2.2866 (MSE: 1.3863, PLoss: 0.6002) (5.5 seq/s)
+  Epoch [2] Batch [300/313] Loss: 2.2881 (MSE: 1.3869, PLoss: 0.6008) (5.5 seq/s)
+  Epoch [2] Batch [313/313] Loss: 2.2908 (MSE: 1.3900, PLoss: 0.6006) (2.7 seq/s)
+Evaluating validation metric (on 150 sequences)...
+Epoch 2 Results:
+  Train Loss: 2.2908 (MSE: 1.3900, PLoss: 0.6006, time: 458.1s)
+  Val WP    : 0.6984 (t0: 0.7165, t1: 0.6804, time: 55.0s)
+  Current LR: 0.000050
+  [BEST] New best validation score! Saved to: runs\screen\h192x2\best.pt
+
+============================================================
+Computing Stochastic Weight Averaged (SWA) Ensemble...
+SWA Ensemble WP on 150-seq subset: 0.6941 (t0: 0.7174, t1: 0.6709) vs Best Epoch: 0.6984
+  [INFO] Single best checkpoint retained.
+
+============================================================
+Training Complete! Final Best Validation WP: 0.6984
+Best checkpoint saved at: runs\screen\h192x2\best.pt
+============================================================
+
+[AUTO-EXPORT] Exporting best model to ONNX: runs\screen\h192x2\sub\model.onnx...
+Loading checkpoint from: runs\screen\h192x2\best.pt
+Instantiating ScaledWunderGRU:
+  Input Dim  : 144
+  Hidden Dim : 192
+  Num Layers : 2
+  Use MoE    : False
+Exporting to ONNX: runs\screen\h192x2\sub\model.onnx (Opset 17)...
+E:\wnn_starter_pack\wnn_connectome_starterpack\src\model.py:173: TracerWarning: Converting a tensor to a Python float might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  if float(self.norm_clip) > 0:
+E:\wnn_starter_pack\wnn_connectome_starterpack\wnn_env\Lib\site-packages\torch\onnx\symbolic_opset9.py:4277: UserWarning: Exporting a model to ONNX with a batch_size other than 1, with a variable length with GRU can cause an error when running the ONNX model with a different batch size. Make sure to save the model with a batch size of 1, or define the initial states (h0/c0) as inputs of the model. 
+  warnings.warn(
+[SUCCESS] ONNX model exported cleanly! File size: 1.96 MB (Budget: <= 20 MB)
+
+Verifying numerical parity between PyTorch and ONNX Runtime...
+Max absolute discrepancy:
+  Prediction  : 2.09e-07
+  Next Hidden0: 6.56e-07
+  Next Hidden1: 4.99e-07
+[SUCCESS] Full numerical parity verified!
+
+[AUTO-PACKAGE] Packaging verified submission archive: runs/screen/h192x2/sub.zip...
+============================================================
+      Wunder RNN Challenge -- Submission Packager
+============================================================
+Testing submission/solution.py locally...
+  [SUCCESS] predict(data_point) output shape: (2,), values: [0.36006892 0.16838841]
+
+Creating submission archive: runs\screen\h192x2\sub.zip...
+  Added: solution.py (0.01 MB)
+  Added: model.onnx (1.96 MB)
+
+Final Archive Size: 1.82 MB / 20.0 MB limit
+[SUCCESS] Submission package verified and ready for upload!
+============================================================

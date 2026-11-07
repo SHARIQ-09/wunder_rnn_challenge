@@ -1,0 +1,24 @@
+
+===== train =====
+E:\wnn_starter_pack\wnn_connectome_starterpack\runs\decode\latent.py:24: RuntimeWarning: divide by zero encountered in divide
+  return st, float((np.abs(a / st - np.round(a / st)) < 0.02).mean())
+E:\wnn_starter_pack\wnn_connectome_starterpack\runs\decode\latent.py:24: RuntimeWarning: invalid value encountered in subtract
+  return st, float((np.abs(a / st - np.round(a / st)) < 0.02).mean())
+unit 0.6569 i0 (30 seqs): upd=0.147 r95=2 r99=3 r999=6 rb=3 ra=4 distinct=0.011 top5=0.601 step=0.00188 lat=0.0747 both=1 bonly=0 aonly=0 nunique=11.2
+unit 0.6569 i1 (30 seqs): upd=0.0409 r95=3.5 r99=7.5 r999=13 rb=5 ra=6 distinct=0.13 top5=0.355 step=0.0011 lat=0.0431 both=1 bonly=0 aonly=0 nunique=27.2
+unit 0.2413 i0 (30 seqs): upd=0.288 r95=5 r99=11 r999=18 rb=6.5 ra=7 distinct=0.103 top5=0.303 step=0.00013 lat=0.025 both=0.932 bonly=0.0322 aonly=0.0307 nunique=154
+unit 0.2413 i1 (30 seqs): upd=0.155 r95=7 r99=13 r999=20 rb=7 ra=8 distinct=0.299 top5=0.158 step=9.5e-05 lat=0.0293 both=0.838 bonly=0.0749 aonly=0.0741 nunique=196
+unit 0.4686 i0 (30 seqs): upd=0.0951 r95=3 r99=6 r999=10 rb=4 ra=5 distinct=0.0347 top5=0.543 step=0.00131 lat=0.0284 both=0.996 bonly=0.00204 aonly=0.00136 nunique=19.8
+unit 0.4686 i1 (30 seqs): upd=0.0791 r95=3 r99=5 r999=10 rb=4 ra=5 distinct=0.0409 top5=0.47 step=0.00128 lat=0.0687 both=0.998 bonly=0.000884 aonly=0.000439 nunique=18.8
+unit 0.1254 i0 (30 seqs): upd=0.438 r95=7.5 r99=15 r999=21 rb=8 ra=9 distinct=0.374 top5=0.077 step=9.5e-05 lat=0.0337 both=0.882 bonly=0.0633 aonly=0.0617 nunique=746
+unit 0.1254 i1 (30 seqs): upd=0.235 r95=9 r99=16 r999=21 rb=8.5 ra=9 distinct=0.719 top5=0.0397 step=6.5e-05 lat=0.0362 both=0.711 bonly=0.139 aonly=0.156 nunique=845
+
+===== valid =====
+unit 0.6569 i0 (30 seqs): upd=0.313 r95=2 r99=3 r999=5 rb=3 ra=3 distinct=0.00304 top5=0.74 step=0.00243 lat=0.0471 both=1 bonly=0 aonly=0 nunique=8
+unit 0.6569 i1 (30 seqs): upd=0.0599 r95=3 r99=7 r999=13 rb=5 ra=5 distinct=0.1 top5=0.383 step=0.00082 lat=0.0419 both=0.999 bonly=0 aonly=0 nunique=32.8
+unit 0.2413 i0 (30 seqs): upd=0.269 r95=5 r99=11 r999=17.5 rb=6 ra=7 distinct=0.088 top5=0.336 step=0.000153 lat=0.0204 both=0.928 bonly=0.0343 aonly=0.0286 nunique=125
+unit 0.2413 i1 (30 seqs): upd=0.155 r95=5 r99=11 r999=18 rb=7 ra=7 distinct=0.196 top5=0.185 step=0.000255 lat=0.0356 both=0.852 bonly=0.0705 aonly=0.0757 nunique=112
+unit 0.4686 i0 (30 seqs): upd=0.0917 r95=3 r99=6 r999=11 rb=4 ra=5 distinct=0.0341 top5=0.553 step=0.00108 lat=0.0285 both=0.995 bonly=0.00216 aonly=0.00153 nunique=25.5
+unit 0.4686 i1 (30 seqs): upd=0.0853 r95=3 r99=6 r999=11 rb=4 ra=5 distinct=0.0399 top5=0.474 step=0.00108 lat=0.0519 both=0.998 bonly=0.000693 aonly=0.00113 nunique=23
+unit 0.1254 i0 (30 seqs): upd=0.435 r95=6 r99=13 r999=20.5 rb=7 ra=8 distinct=0.276 top5=0.114 step=0.000132 lat=0.0318 both=0.859 bonly=0.0617 aonly=0.0711 nunique=529
+unit 0.1254 i1 (30 seqs): upd=0.238 r95=8 r99=15 r999=21 rb=8 ra=9 distinct=0.656 top5=0.0367 step=8.75e-05 lat=0.0363 both=0.691 bonly=0.136 aonly=0.167 nunique=747

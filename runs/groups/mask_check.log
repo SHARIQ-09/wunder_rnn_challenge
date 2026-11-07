@@ -1,0 +1,4 @@
+group 0.0253: n=160 scored rows/seq mean 1976 (min 245, max 8748) | WP scored 0.6033 | WP all rows 0.5032 | WP unscored 0.4827 | |t| scored 0.728 unscored 0.609 | update share scored 0.168 all 0.312
+group 0.038: n=77 scored rows/seq mean 704 (min 100, max 1584) | WP scored 0.7349 | WP all rows 0.3657 | WP unscored 0.3420 | |t| scored 0.713 unscored 0.673 | update share scored 0.130 all 0.113
+group 0.076: n=63 scored rows/seq mean 2485 (min 672, max 6076) | WP scored 0.8079 | WP all rows 0.6000 | WP unscored 0.5458 | |t| scored 0.796 unscored 0.619 | update share scored 0.469 all 0.437
+group all: n=300 scored rows/seq mean 1756 (min 100, max 8748) | WP scored 0.6987 | WP all rows 0.5190 | WP unscored 0.4880 | |t| scored 0.747 unscored 0.628 | update share scored 0.221 all 0.287

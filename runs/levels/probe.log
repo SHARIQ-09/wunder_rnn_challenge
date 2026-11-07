@@ -1,0 +1,68 @@
+200 valid sequences, 398,203 scored rows, 814 candidates
+Metric check on this subset: own 0.659872, official 0.659872
+
+scored half 0
+scored half 1
+
+i0: same-index pairs, rank among all 121 pairs (1 = strongest)
+  pos   |corr target|  rank   |corr residual|  rank
+    0 *       0.2386     2          0.0123    33
+    1         0.0319    99          0.0077    54
+    2 *       0.1392    42          0.0114    38
+    3         0.0774    79          0.0038    86
+    4 *       0.2028    10          0.0016   108
+    5         0.1357    46          0.0001   121
+    6         0.2079     7          0.0154    21
+    7         0.0131   118          0.0022   103
+    8         0.0253   107          0.0110    40
+    9         0.1483    40          0.0204     5
+   10 *       0.0543    92          0.0131    28
+  median rank of positions 0,2,4,10: target 26, residual 36; median of all 121 is 61
+  strongest pairs vs target: i0_b0-a6 0.244, i0_b0-a0 0.239, i0_b0-a4 0.232, i0_b4-a6 0.224, i0_b0-a3 0.221
+  mean |corr target| by bid position: 0.180 0.065 0.087 0.114 0.147 0.121 0.123 0.063 0.132 0.082 0.101
+  mean |corr target| by ask position: 0.123 0.104 0.094 0.116 0.125 0.109 0.148 0.108 0.093 0.092 0.105
+
+i1: same-index pairs, rank among all 121 pairs (1 = strongest)
+  pos   |corr target|  rank   |corr residual|  rank
+    0 *       0.0614    16          0.0068    33
+    1         0.0329    60          0.0021    82
+    2 *       0.0143    94          0.0052    45
+    3         0.0092   105          0.0107     9
+    4 *       0.0539    24          0.0081    22
+    5         0.0084   108          0.0013    95
+    6         0.0218    81          0.0021    81
+    7         0.0491    29          0.0044    57
+    8         0.0287    68          0.0036    63
+    9         0.0080   109          0.0012    97
+   10 *       0.0575    21          0.0063    38
+  median rank of positions 0,2,4,10: target 22, residual 36; median of all 121 is 61
+  strongest pairs vs target: i1_b1-a10 0.112, i1_b7-a10 0.107, i1_b4-a0 0.090, i1_b3-a10 0.084, i1_b9-a0 0.080
+  mean |corr target| by bid position: 0.030 0.048 0.023 0.025 0.052 0.037 0.029 0.049 0.025 0.040 0.028
+  mean |corr target| by ask position: 0.052 0.032 0.033 0.032 0.026 0.027 0.030 0.025 0.035 0.030 0.064
+
+Single volume columns, mean |corr target| by position 0-21
+  i0: 0.217 0.098 0.176 0.228 0.158 0.114 0.116 0.091 0.134 0.160 0.070 0.174 0.060 0.037 0.161 0.186 0.087 0.231 0.089 0.093 0.089 0.012
+  i1: 0.050 0.046 0.015 0.019 0.092 0.064 0.046 0.045 0.034 0.075 0.040 0.043 0.001 0.006 0.005 0.014 0.057 0.030 0.021 0.006 0.063 0.115
+
+Strongest candidates vs A+Br residual (same sign in both halves and both targets)
+  i0_b9-a7_ema05           residual -0.0251  target +0.0878
+  i0_b9-a7                 residual -0.0231  target +0.0614
+  i0_b0-a1_ema05           residual +0.0207  target -0.2094
+  i1_b4-a7_ema05           residual -0.0206  target -0.0586
+  i0_b0-a1                 residual +0.0197  target -0.1816
+  i0_b0-a8                 residual +0.0191  target -0.0831
+  i0_v2                    residual -0.0189  target +0.1761
+  i1_b4-a7_ema005          residual -0.0185  target -0.0517
+  i1_b3-a6_ema005          residual +0.0184  target +0.0270
+  i0_b0-a4_ema005          residual +0.0178  target -0.2598
+  i0_v0                    residual +0.0177  target -0.2174
+  i1_b1-a7_ema005          residual -0.0176  target +0.0852
+  i0_b3-a10                residual -0.0170  target +0.1656
+  i1_b9-a7_ema05           residual -0.0165  target -0.0369
+  i1_b8-a7_ema05           residual -0.0163  target -0.0126
+
+Held-out ridge correction (columns chosen and fitted on one half, scored on the other)
+  fit half 0, positions 0,2,4,10  : A+Br 0.65808 -> 0.65421  (-0.00387)
+  fit half 0, top 20 of all       : A+Br 0.65808 -> 0.65208  (-0.00599)
+  fit half 1, positions 0,2,4,10  : A+Br 0.66120 -> 0.65891  (-0.00229)
+  fit half 1, top 20 of all       : A+Br 0.66120 -> 0.65290  (-0.00830)

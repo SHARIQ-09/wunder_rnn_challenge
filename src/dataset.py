@@ -20,6 +20,7 @@ if str(ROOT_DIR) not in sys.path:
 
 from utils import FEATURE_COLUMNS, TARGET_COLUMNS, SEQUENCE_LENGTH, WARMUP
 from src.features import extract_32_features_sequence, TOTAL_FEATURES
+from src.feature_sets import build_features
 
 
 class StreamingSequenceDataset(Dataset):
@@ -37,6 +38,7 @@ class StreamingSequenceDataset(Dataset):
         target_columns: Sequence[str] = TARGET_COLUMNS,
         include_targets: bool = True,
         extract_features: bool = True,
+        feature_set: str = "v144",
     ):
         super().__init__()
         self.parquet_path = Path(parquet_path).resolve()
@@ -44,6 +46,7 @@ class StreamingSequenceDataset(Dataset):
             raise FileNotFoundError(f"Parquet file not found: {self.parquet_path}")
 
         self.extract_features = extract_features
+        self.feature_set = feature_set
 
         # Probe metadata once in main process to get row group count
         pf = pq.ParquetFile(self.parquet_path)
@@ -70,6 +73,13 @@ class StreamingSequenceDataset(Dataset):
         # Lazy file handle per process / worker
         self._pf: Optional[pq.ParquetFile] = None
 
+    def __getstate__(self):
+        # Open Parquet handles cannot be pickled into DataLoader worker processes;
+        # each worker reopens the file lazily.
+        state = self.__dict__.copy()
+        state["_pf"] = None
+        return state
+
     def _get_pf(self) -> pq.ParquetFile:
         if self._pf is None:
             self._pf = pq.ParquetFile(self.parquet_path)
@@ -88,7 +98,7 @@ class StreamingSequenceDataset(Dataset):
         df = table.to_pandas()
         features = df[self.feature_columns].to_numpy(dtype=np.float32)
         if self.extract_features:
-            features = extract_32_features_sequence(features)
+            features = build_features(features, self.feature_set)
         features = np.ascontiguousarray(features, dtype=np.float32)
         need_prediction = np.ascontiguousarray(df["need_prediction"].to_numpy(dtype=bool)).copy()
 

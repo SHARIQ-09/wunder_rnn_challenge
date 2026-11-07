@@ -1,0 +1,48 @@
+160 valid sequences, 288,359 scored rows
+
+1. Relation: book change over the 20 steps after a price update
+   price DOWN n= 446548  mean d(bid vol)=+0.0240  mean d(ask vol)=-0.0120
+   price UP   n= 490504  mean d(bid vol)=-0.0010  mean d(ask vol)=-0.0026
+   corr(move, d bid vol)=-0.016   corr(move, d ask vol)=+0.096
+
+2. |t|-weighted corr with target and with A+B residual
+   t0: corr(pred, t)=0.7104
+      move               target +0.0045   residual +0.0010
+      dBid               target -0.0469   residual +0.0177
+      dAsk               target +0.0888   residual -0.0149
+      dB_score           target +0.1734   residual -0.0253
+      dS_score           target +0.1964   residual -0.0308
+      dBid*down          target -0.0297   residual +0.0090
+      dAsk*up            target +0.0315   residual -0.0281
+      dBid*up            target -0.0358   residual +0.0171
+      dAsk*down          target +0.0964   residual +0.0080
+      dBid*move          target +0.0043   residual +0.0143
+      dAsk*move          target -0.0355   residual -0.0126
+      absorb_net         target -0.0429   residual +0.0256
+      absorb_net*|move|  target -0.0266   residual +0.0100
+      dB_score*move      target +0.0428   residual +0.0217
+      dS_score*move      target -0.0008   residual +0.0265
+      ema(absorb_net)    target -0.0413   residual +0.0304
+   t1: corr(pred, t)=0.6769
+      move               target -0.0075   residual +0.0261
+      dBid               target +0.0841   residual +0.0012
+      dAsk               target -0.0921   residual -0.0273
+      dB_score           target -0.1769   residual -0.0191
+      dS_score           target -0.2021   residual +0.0172
+      dBid*down          target +0.0648   residual +0.0070
+      dAsk*up            target -0.0587   residual -0.0269
+      dBid*up            target +0.0532   residual -0.0060
+      dAsk*down          target -0.0732   residual -0.0108
+      dBid*move          target -0.0084   residual -0.0183
+      dAsk*move          target +0.0309   residual +0.0016
+      absorb_net         target +0.0869   residual +0.0235
+      absorb_net*|move|  target +0.0498   residual +0.0071
+      dB_score*move      target +0.0669   residual -0.0126
+      dS_score*move      target +0.1489   residual +0.0174
+      ema(absorb_net)    target +0.1045   residual +0.0355
+
+3. Held-out ridge correction on the residual (fit on even sequences, score odd ones)
+   all 16                 fit on even: A+B 0.60593 -> corrected 0.60275
+   all 16                 fit on odd : A+B 0.66068 -> corrected 0.65824
+   ema(absorb_net) only   fit on even: A+B 0.60593 -> corrected 0.60680
+   ema(absorb_net) only   fit on odd : A+B 0.66068 -> corrected 0.66046

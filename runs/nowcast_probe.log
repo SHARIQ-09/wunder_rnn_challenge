@@ -1,0 +1,2 @@
+train rows 398400 valid scored rows 318470
+current-row-only LightGBM: t0=0.6122 t1=0.6355 WP=0.6239  (pooled over 157 valid seqs, official mask)

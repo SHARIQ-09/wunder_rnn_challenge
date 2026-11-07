@@ -1,0 +1,5 @@
+[100/400] 19.7s
+[200/400] 37.8s
+[300/400] 57.0s
+[400/400] 78.0s
+Saved datasets/norm_stats_slim.npz: rows=8,000,000, std min=1.791e-02 max=2.888e+00

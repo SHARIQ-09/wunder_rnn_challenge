@@ -1,0 +1,6 @@
+unit 0.6569: ridge sum corr all rows 0.5734 scored 0.1823 within-seq all rows 0.6183 | A+B scored 0.0215 | WP base 0.4368 ridge sum 0.4263 oracle sum 0.5055
+unit 0.2413: ridge sum corr all rows 0.3732 scored 0.2624 within-seq all rows 0.3842 | A+B scored 0.3019 | WP base 0.7671 ridge sum 0.7622 oracle sum 0.8210
+unit 0.4686: ridge sum corr all rows 0.3704 scored 0.3412 within-seq all rows 0.4115 | A+B scored 0.2199 | WP base 0.7349 ridge sum 0.7286 oracle sum 0.7716
+unit 0.1254: ridge sum corr all rows 0.4899 scored 0.4117 within-seq all rows 0.4658 | A+B scored 0.3846 | WP base 0.8079 ridge sum 0.7922 oracle sum 0.8298
+global, half 0, ridge sum only in unit 0.6569: 0.72964 -> 0.72328
+global, half 1, ridge sum only in unit 0.6569: 0.66651 -> 0.65896

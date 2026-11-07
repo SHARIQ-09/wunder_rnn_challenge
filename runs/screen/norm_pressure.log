@@ -1,0 +1,5 @@
+[100/400] 28.7s
+[200/400] 56.3s
+[300/400] 86.0s
+[400/400] 117.5s
+Saved datasets/norm_stats_pressure.npz: rows=8,000,000, std min=1.791e-02 max=1.278e+01

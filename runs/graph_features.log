@@ -1,0 +1,5 @@
+E:\wnn_starter_pack\wnn_connectome_starterpack\wnn_env\Lib\site-packages\torch\onnx\symbolic_opset9.py:4277: UserWarning: Exporting a model to ONNX with a batch_size other than 1, with a variable length with GRU can cause an error when running the ONNX model with a different batch size. Make sure to save the model with a batch size of 1, or define the initial states (h0/c0) as inputs of the model. 
+graph-feature parity vs solution.py over 20000 steps: max diff 2.10e-05
+old H128 (py feats + ORT)     221.3 us/step
+graph H128                    273.3 us/step
+graph H160                    316.6 us/step

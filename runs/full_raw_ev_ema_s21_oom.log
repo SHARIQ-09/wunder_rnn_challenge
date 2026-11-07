@@ -1,0 +1,163 @@
+============================================================
+[TRAINING] Wunder RNN Challenge -- Scaled Training Pipeline
+============================================================
+Device         : cuda (NVIDIA GeForce RTX 3070 Laptop GPU)
+Mixed Precision: True (fp16)
+Batch Size     : 8 sequences in parallel
+Chunk Size     : 2048 timesteps per BPTT unroll
+Input Dim      : 456 raw features
+GRU Capacity   : 2 layers x 128 hidden units (Residuals + LayerNorm)
+Learning Rate  : 0.001 (AdamW + Cosine Decay)
+Loss Function  : HybridLoss (MSE: 1.0, Pearson: 1.5)
+Save Path      : checkpoints_raw_ev_ema_s21
+============================================================
+Training Set   : 10,607 sequences available
+Validation Set : 1,873 sequences available (150 used per epoch)
+Model Parameters: 274,434 (~1.05 MB f32)
+MoE Gated Experts: False
+[NORM] Installed feature standardization (fold_into_input=False, clip=0.0)
+
+Starting training loop...
+
+--- Epoch 1/8 ---
+  Epoch [1] Batch [25/1326] Loss: 2.5185 (MSE: 1.4953, PLoss: 0.6822) (4.2 seq/s)
+  Epoch [1] Batch [50/1326] Loss: 2.4763 (MSE: 1.4890, PLoss: 0.6582) (4.4 seq/s)
+  Epoch [1] Batch [75/1326] Loss: 2.4507 (MSE: 1.4786, PLoss: 0.6481) (4.4 seq/s)
+  Epoch [1] Batch [100/1326] Loss: 2.3968 (MSE: 1.4487, PLoss: 0.6321) (4.4 seq/s)
+  Epoch [1] Batch [125/1326] Loss: 2.4002 (MSE: 1.4487, PLoss: 0.6344) (4.4 seq/s)
+  Epoch [1] Batch [150/1326] Loss: 2.3856 (MSE: 1.4414, PLoss: 0.6294) (4.4 seq/s)
+  Epoch [1] Batch [175/1326] Loss: 2.3801 (MSE: 1.4349, PLoss: 0.6301) (4.4 seq/s)
+  Epoch [1] Batch [200/1326] Loss: 2.3699 (MSE: 1.4287, PLoss: 0.6275) (4.4 seq/s)
+  Epoch [1] Batch [225/1326] Loss: 2.3739 (MSE: 1.4356, PLoss: 0.6255) (4.4 seq/s)
+  Epoch [1] Batch [250/1326] Loss: 2.3674 (MSE: 1.4306, PLoss: 0.6245) (4.4 seq/s)
+  Epoch [1] Batch [275/1326] Loss: 2.3688 (MSE: 1.4311, PLoss: 0.6251) (4.4 seq/s)
+  Epoch [1] Batch [300/1326] Loss: 2.3731 (MSE: 1.4326, PLoss: 0.6270) (4.4 seq/s)
+  Epoch [1] Batch [325/1326] Loss: 2.3666 (MSE: 1.4293, PLoss: 0.6249) (4.4 seq/s)
+  Epoch [1] Batch [350/1326] Loss: 2.3628 (MSE: 1.4269, PLoss: 0.6240) (4.4 seq/s)
+  Epoch [1] Batch [375/1326] Loss: 2.3585 (MSE: 1.4230, PLoss: 0.6237) (4.4 seq/s)
+  Epoch [1] Batch [400/1326] Loss: 2.3538 (MSE: 1.4211, PLoss: 0.6218) (4.4 seq/s)
+  Epoch [1] Batch [425/1326] Loss: 2.3471 (MSE: 1.4174, PLoss: 0.6198) (4.4 seq/s)
+  Epoch [1] Batch [450/1326] Loss: 2.3438 (MSE: 1.4163, PLoss: 0.6183) (4.4 seq/s)
+  Epoch [1] Batch [475/1326] Loss: 2.3390 (MSE: 1.4133, PLoss: 0.6172) (4.4 seq/s)
+  Epoch [1] Batch [500/1326] Loss: 2.3407 (MSE: 1.4142, PLoss: 0.6176) (4.4 seq/s)
+  Epoch [1] Batch [525/1326] Loss: 2.3382 (MSE: 1.4127, PLoss: 0.6170) (4.4 seq/s)
+  Epoch [1] Batch [550/1326] Loss: 2.3360 (MSE: 1.4111, PLoss: 0.6166) (4.4 seq/s)
+  Epoch [1] Batch [575/1326] Loss: 2.3337 (MSE: 1.4100, PLoss: 0.6158) (4.4 seq/s)
+  Epoch [1] Batch [600/1326] Loss: 2.3349 (MSE: 1.4114, PLoss: 0.6157) (4.4 seq/s)
+  Epoch [1] Batch [625/1326] Loss: 2.3309 (MSE: 1.4092, PLoss: 0.6145) (4.4 seq/s)
+  Epoch [1] Batch [650/1326] Loss: 2.3299 (MSE: 1.4086, PLoss: 0.6142) (4.4 seq/s)
+  Epoch [1] Batch [675/1326] Loss: 2.3259 (MSE: 1.4066, PLoss: 0.6129) (4.4 seq/s)
+  Epoch [1] Batch [700/1326] Loss: 2.3230 (MSE: 1.4045, PLoss: 0.6124) (4.4 seq/s)
+  Epoch [1] Batch [725/1326] Loss: 2.3237 (MSE: 1.4049, PLoss: 0.6125) (4.4 seq/s)
+  Epoch [1] Batch [750/1326] Loss: 2.3233 (MSE: 1.4048, PLoss: 0.6123) (4.4 seq/s)
+  Epoch [1] Batch [775/1326] Loss: 2.3206 (MSE: 1.4032, PLoss: 0.6116) (4.4 seq/s)
+  Epoch [1] Batch [800/1326] Loss: 2.3185 (MSE: 1.4018, PLoss: 0.6111) (4.4 seq/s)
+  Epoch [1] Batch [825/1326] Loss: 2.3176 (MSE: 1.4012, PLoss: 0.6109) (4.4 seq/s)
+  Epoch [1] Batch [850/1326] Loss: 2.3162 (MSE: 1.4010, PLoss: 0.6102) (4.4 seq/s)
+  Epoch [1] Batch [875/1326] Loss: 2.3146 (MSE: 1.3997, PLoss: 0.6100) (4.4 seq/s)
+  Epoch [1] Batch [900/1326] Loss: 2.3128 (MSE: 1.3987, PLoss: 0.6094) (4.4 seq/s)
+  Epoch [1] Batch [925/1326] Loss: 2.3116 (MSE: 1.3982, PLoss: 0.6089) (4.4 seq/s)
+  Epoch [1] Batch [950/1326] Loss: 2.3096 (MSE: 1.3970, PLoss: 0.6084) (4.4 seq/s)
+  Epoch [1] Batch [975/1326] Loss: 2.3077 (MSE: 1.3959, PLoss: 0.6079) (4.4 seq/s)
+  Epoch [1] Batch [1000/1326] Loss: 2.3065 (MSE: 1.3953, PLoss: 0.6074) (4.4 seq/s)
+  Epoch [1] Batch [1025/1326] Loss: 2.3063 (MSE: 1.3962, PLoss: 0.6067) (4.4 seq/s)
+  Epoch [1] Batch [1050/1326] Loss: 2.3069 (MSE: 1.3968, PLoss: 0.6067) (4.4 seq/s)
+  Epoch [1] Batch [1075/1326] Loss: 2.3069 (MSE: 1.3972, PLoss: 0.6064) (4.4 seq/s)
+  Epoch [1] Batch [1100/1326] Loss: 2.3055 (MSE: 1.3962, PLoss: 0.6062) (4.4 seq/s)
+  Epoch [1] Batch [1125/1326] Loss: 2.3073 (MSE: 1.3971, PLoss: 0.6067) (4.4 seq/s)
+  Epoch [1] Batch [1150/1326] Loss: 2.3070 (MSE: 1.3970, PLoss: 0.6067) (4.4 seq/s)
+  Epoch [1] Batch [1175/1326] Loss: 2.3051 (MSE: 1.3956, PLoss: 0.6063) (4.4 seq/s)
+  Epoch [1] Batch [1200/1326] Loss: 2.3039 (MSE: 1.3951, PLoss: 0.6059) (4.4 seq/s)
+  Epoch [1] Batch [1225/1326] Loss: 2.3031 (MSE: 1.3945, PLoss: 0.6057) (4.4 seq/s)
+  Epoch [1] Batch [1250/1326] Loss: 2.3030 (MSE: 1.3947, PLoss: 0.6055) (4.4 seq/s)
+  Epoch [1] Batch [1275/1326] Loss: 2.3005 (MSE: 1.3936, PLoss: 0.6046) (4.4 seq/s)
+  Epoch [1] Batch [1300/1326] Loss: 2.3000 (MSE: 1.3933, PLoss: 0.6045) (4.4 seq/s)
+  Epoch [1] Batch [1325/1326] Loss: 2.2995 (MSE: 1.3930, PLoss: 0.6043) (4.4 seq/s)
+  Epoch [1] Batch [1326/1326] Loss: 2.2994 (MSE: 1.3929, PLoss: 0.6043) (3.9 seq/s)
+Evaluating validation metric (on 150 sequences)...
+Epoch 1 Results:
+  Train Loss: 2.2994 (MSE: 1.3929, PLoss: 0.6043, time: 2410.6s)
+  Val WP    : 0.6914 (t0: 0.7181, t1: 0.6648, time: 43.6s)
+  Current LR: 0.000964
+  [BEST] New best validation score! Saved to: checkpoints_raw_ev_ema_s21\best.pt
+
+--- Epoch 2/8 ---
+  Epoch [2] Batch [25/1326] Loss: 2.2132 (MSE: 1.3628, PLoss: 0.5670) (4.3 seq/s)
+  Epoch [2] Batch [50/1326] Loss: 2.2115 (MSE: 1.3445, PLoss: 0.5780) (4.4 seq/s)
+  Epoch [2] Batch [75/1326] Loss: 2.2034 (MSE: 1.3407, PLoss: 0.5751) (4.4 seq/s)
+  Epoch [2] Batch [100/1326] Loss: 2.2306 (MSE: 1.3601, PLoss: 0.5803) (4.4 seq/s)
+  Epoch [2] Batch [125/1326] Loss: 2.2334 (MSE: 1.3606, PLoss: 0.5819) (4.4 seq/s)
+  Epoch [2] Batch [150/1326] Loss: 2.2346 (MSE: 1.3606, PLoss: 0.5826) (4.4 seq/s)
+  Epoch [2] Batch [175/1326] Loss: 2.2364 (MSE: 1.3613, PLoss: 0.5834) (4.4 seq/s)
+  Epoch [2] Batch [200/1326] Loss: 2.2363 (MSE: 1.3602, PLoss: 0.5840) (4.4 seq/s)
+  Epoch [2] Batch [225/1326] Loss: 2.2436 (MSE: 1.3651, PLoss: 0.5856) (4.4 seq/s)
+  Epoch [2] Batch [250/1326] Loss: 2.2451 (MSE: 1.3658, PLoss: 0.5862) (4.4 seq/s)
+  Epoch [2] Batch [275/1326] Loss: 2.2387 (MSE: 1.3605, PLoss: 0.5855) (4.4 seq/s)
+  Epoch [2] Batch [300/1326] Loss: 2.2418 (MSE: 1.3615, PLoss: 0.5869) (4.4 seq/s)
+  Epoch [2] Batch [325/1326] Loss: 2.2421 (MSE: 1.3603, PLoss: 0.5879) (4.4 seq/s)
+  Epoch [2] Batch [350/1326] Loss: 2.2418 (MSE: 1.3596, PLoss: 0.5881) (4.4 seq/s)
+  Epoch [2] Batch [375/1326] Loss: 2.2392 (MSE: 1.3577, PLoss: 0.5876) (4.4 seq/s)
+  Epoch [2] Batch [400/1326] Loss: 2.2385 (MSE: 1.3570, PLoss: 0.5876) (4.4 seq/s)
+  Epoch [2] Batch [425/1326] Loss: 2.2434 (MSE: 1.3598, PLoss: 0.5891) (4.4 seq/s)
+  Epoch [2] Batch [450/1326] Loss: 2.2399 (MSE: 1.3577, PLoss: 0.5882) (4.4 seq/s)
+  Epoch [2] Batch [475/1326] Loss: 2.2408 (MSE: 1.3578, PLoss: 0.5886) (4.4 seq/s)
+  Epoch [2] Batch [500/1326] Loss: 2.2418 (MSE: 1.3586, PLoss: 0.5888) (4.4 seq/s)
+  Epoch [2] Batch [525/1326] Loss: 2.2420 (MSE: 1.3592, PLoss: 0.5885) (4.4 seq/s)
+  Epoch [2] Batch [550/1326] Loss: 2.2435 (MSE: 1.3606, PLoss: 0.5886) (4.4 seq/s)
+  Epoch [2] Batch [575/1326] Loss: 2.2403 (MSE: 1.3592, PLoss: 0.5874) (4.4 seq/s)
+  Epoch [2] Batch [600/1326] Loss: 2.2423 (MSE: 1.3616, PLoss: 0.5871) (4.4 seq/s)
+  Epoch [2] Batch [625/1326] Loss: 2.2443 (MSE: 1.3641, PLoss: 0.5868) (4.4 seq/s)
+  Epoch [2] Batch [650/1326] Loss: 2.2467 (MSE: 1.3659, PLoss: 0.5872) (4.4 seq/s)
+  Epoch [2] Batch [675/1326] Loss: 2.2472 (MSE: 1.3661, PLoss: 0.5874) (4.4 seq/s)
+  Epoch [2] Batch [700/1326] Loss: 2.2462 (MSE: 1.3644, PLoss: 0.5879) (4.4 seq/s)
+  Epoch [2] Batch [725/1326] Loss: 2.2450 (MSE: 1.3636, PLoss: 0.5876) (4.4 seq/s)
+  Epoch [2] Batch [750/1326] Loss: 2.2418 (MSE: 1.3619, PLoss: 0.5866) (4.4 seq/s)
+  Epoch [2] Batch [775/1326] Loss: 2.2424 (MSE: 1.3618, PLoss: 0.5870) (4.4 seq/s)
+  Epoch [2] Batch [800/1326] Loss: 2.2428 (MSE: 1.3622, PLoss: 0.5871) (4.4 seq/s)
+  Epoch [2] Batch [825/1326] Loss: 2.2409 (MSE: 1.3612, PLoss: 0.5865) (4.4 seq/s)
+  Epoch [2] Batch [850/1326] Loss: 2.2431 (MSE: 1.3624, PLoss: 0.5871) (4.4 seq/s)
+  Epoch [2] Batch [875/1326] Loss: 2.2432 (MSE: 1.3626, PLoss: 0.5871) (4.4 seq/s)
+  Epoch [2] Batch [900/1326] Loss: 2.2442 (MSE: 1.3634, PLoss: 0.5872) (4.4 seq/s)
+  Epoch [2] Batch [925/1326] Loss: 2.2439 (MSE: 1.3627, PLoss: 0.5874) (4.4 seq/s)
+  Epoch [2] Batch [950/1326] Loss: 2.2428 (MSE: 1.3623, PLoss: 0.5870) (4.4 seq/s)
+  Epoch [2] Batch [975/1326] Loss: 2.2422 (MSE: 1.3618, PLoss: 0.5869) (4.4 seq/s)
+  Epoch [2] Batch [1000/1326] Loss: 2.2411 (MSE: 1.3611, PLoss: 0.5867) (4.4 seq/s)
+  Epoch [2] Batch [1025/1326] Loss: 2.2420 (MSE: 1.3619, PLoss: 0.5867) (4.4 seq/s)
+  Epoch [2] Batch [1050/1326] Loss: 2.2413 (MSE: 1.3616, PLoss: 0.5865) (4.4 seq/s)
+  Epoch [2] Batch [1075/1326] Loss: 2.2415 (MSE: 1.3614, PLoss: 0.5867) (4.4 seq/s)
+  Epoch [2] Batch [1100/1326] Loss: 2.2409 (MSE: 1.3616, PLoss: 0.5862) (4.4 seq/s)
+  Epoch [2] Batch [1125/1326] Loss: 2.2400 (MSE: 1.3609, PLoss: 0.5860) (4.4 seq/s)
+  Epoch [2] Batch [1150/1326] Loss: 2.2406 (MSE: 1.3614, PLoss: 0.5862) (4.4 seq/s)
+  Epoch [2] Batch [1175/1326] Loss: 2.2421 (MSE: 1.3622, PLoss: 0.5866) (4.4 seq/s)
+  Epoch [2] Batch [1200/1326] Loss: 2.2437 (MSE: 1.3637, PLoss: 0.5866) (4.4 seq/s)
+  Epoch [2] Batch [1225/1326] Loss: 2.2459 (MSE: 1.3654, PLoss: 0.5870) (4.4 seq/s)
+  Epoch [2] Batch [1250/1326] Loss: 2.2453 (MSE: 1.3651, PLoss: 0.5868) (4.4 seq/s)
+Traceback (most recent call last):
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\src\train.py", line 681, in <module>
+    main()
+    ~~~~^^
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\src\train.py", line 519, in main
+    train_metrics = train_epoch(
+        model=model,
+    ...<10 lines>...
+        scored_weight=args.scored_weight,
+    )
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\src\train.py", line 283, in train_epoch
+    for batch_idx, batch in enumerate(train_loader):
+                            ~~~~~~~~~^^^^^^^^^^^^^^
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\wnn_env\Lib\site-packages\torch\utils\data\dataloader.py", line 708, in __next__
+    data = self._next_data()
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\wnn_env\Lib\site-packages\torch\utils\data\dataloader.py", line 764, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\wnn_env\Lib\site-packages\torch\utils\data\_utils\fetch.py", line 52, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+            ~~~~~~~~~~~~^^^^^
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\src\dataset.py", line 101, in __getitem__
+    features = build_features(features, self.feature_set)
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\src\feature_sets.py", line 53, in build_features
+    out = np.concatenate([x, _ev_ema_block(x)], axis=1)
+                             ~~~~~~~~~~~~~^^^
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\src\feature_sets.py", line 42, in _ev_ema_block
+    return np.concatenate([_events(x), diff] + devs, axis=1)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+numpy._core._exceptions._ArrayMemoryError: Unable to allocate 52.5 MiB for an array with shape (20000, 344) and data type float64

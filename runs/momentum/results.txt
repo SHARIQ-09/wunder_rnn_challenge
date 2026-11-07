@@ -1,0 +1,1 @@
+checkpoints_momentum_s21/best.pt [momentum]  FULL-VALID WP=0.680784 t0=0.676345 t1=0.685223 rows=3528273

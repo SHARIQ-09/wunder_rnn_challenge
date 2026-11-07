@@ -1,0 +1,20 @@
+
+train: 10607 seqs. purity min 0.9893 p1 1.0000 median 1.0000; seqs with purity<0.99: 1
+unit share: 0.6569:0.430 0.2413:0.119 0.4686:0.329 0.1254:0.123
+dv group x unit counts (rows=dv group):
+[[4557 1257    0    0]
+ [   0    0 3488    0]
+ [   0    0    0 1305]]
+
+valid: 1873 seqs. purity min 0.9981 p1 1.0000 median 1.0000; seqs with purity<0.99: 0
+unit share: 0.6569:0.372 0.2413:0.185 0.4686:0.230 0.1254:0.212
+dv group x unit counts (rows=dv group):
+[[697 347   0   0]
+ [  0   0 431   0]
+ [  0   0   0 398]]
+
+A+B on 300 valid seqs, scored rows: all WP 0.6987
+unit 0.6569: rows 0.427 metric weight 0.423 WP 0.4368 corr diff 0.4356 corr sum 0.0215 pred std 0.579 target std 0.944
+unit 0.2413: rows 0.173 metric weight 0.181 WP 0.7671 corr diff 0.6601 corr sum 0.3019 pred std 0.878 target std 1.075
+unit 0.4686: rows 0.103 metric weight 0.102 WP 0.7349 corr diff 0.6487 corr sum 0.2199 pred std 0.945 target std 0.925
+unit 0.1254: rows 0.297 metric weight 0.294 WP 0.8079 corr diff 0.5794 corr sum 0.3846 pred std 0.927 target std 1.370

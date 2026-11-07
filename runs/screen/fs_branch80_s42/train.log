@@ -1,0 +1,83 @@
+============================================================
+[TRAINING] Wunder RNN Challenge -- Scaled Training Pipeline
+============================================================
+Device         : cuda (NVIDIA GeForce RTX 3070 Laptop GPU)
+Mixed Precision: True (fp16)
+Batch Size     : 8 sequences in parallel
+Chunk Size     : 2048 timesteps per BPTT unroll
+Input Dim      : 456 raw features
+GRU Capacity   : 2 layers x 80 hidden units (Residuals + LayerNorm)
+Learning Rate  : 0.001 (AdamW + Cosine Decay)
+Loss Function  : HybridLoss (MSE: 1.0, Pearson: 1.0)
+Save Path      : runs\screen\fs_branch80_s42
+============================================================
+Training Set   : 2,500 sequences available
+Validation Set : 1,873 sequences available (150 used per epoch)
+Model Parameters: 265,282 (~1.01 MB f32)
+MoE Gated Experts: False
+[NORM] Installed feature standardization (fold_into_input=False, clip=0.0)
+
+Starting training loop...
+
+--- Epoch 1/2 ---
+  Epoch [1] Batch [25/313] Loss: 2.2171 (MSE: 1.5267, PLoss: 0.6904) (4.7 seq/s)
+  Epoch [1] Batch [50/313] Loss: 2.1767 (MSE: 1.5063, PLoss: 0.6704) (4.9 seq/s)
+  Epoch [1] Batch [75/313] Loss: 2.1423 (MSE: 1.4859, PLoss: 0.6564) (5.0 seq/s)
+  Epoch [1] Batch [100/313] Loss: 2.1208 (MSE: 1.4702, PLoss: 0.6506) (5.0 seq/s)
+  Epoch [1] Batch [125/313] Loss: 2.0973 (MSE: 1.4529, PLoss: 0.6443) (5.0 seq/s)
+  Epoch [1] Batch [150/313] Loss: 2.0812 (MSE: 1.4413, PLoss: 0.6399) (5.0 seq/s)
+  Epoch [1] Batch [175/313] Loss: 2.0766 (MSE: 1.4383, PLoss: 0.6383) (4.9 seq/s)
+  Epoch [1] Batch [200/313] Loss: 2.0708 (MSE: 1.4347, PLoss: 0.6361) (4.9 seq/s)
+  Epoch [1] Batch [225/313] Loss: 2.0759 (MSE: 1.4391, PLoss: 0.6367) (4.8 seq/s)
+  Epoch [1] Batch [250/313] Loss: 2.0633 (MSE: 1.4310, PLoss: 0.6322) (4.8 seq/s)
+  Epoch [1] Batch [275/313] Loss: 2.0552 (MSE: 1.4266, PLoss: 0.6286) (4.8 seq/s)
+  Epoch [1] Batch [300/313] Loss: 2.0553 (MSE: 1.4273, PLoss: 0.6280) (4.8 seq/s)
+  Epoch [1] Batch [313/313] Loss: 2.0524 (MSE: 1.4257, PLoss: 0.6267) (2.4 seq/s)
+Evaluating validation metric (on 150 sequences)...
+Epoch 1 Results:
+  Train Loss: 2.0524 (MSE: 1.4257, PLoss: 0.6267, time: 521.3s)
+  Val WP    : 0.6614 (t0: 0.7066, t1: 0.6161, time: 40.6s)
+  Current LR: 0.000525
+  [BEST] New best validation score! Saved to: runs\screen\fs_branch80_s42\best.pt
+
+--- Epoch 2/2 ---
+  Epoch [2] Batch [25/313] Loss: 1.9281 (MSE: 1.3391, PLoss: 0.5890) (4.4 seq/s)
+  Epoch [2] Batch [50/313] Loss: 1.9521 (MSE: 1.3653, PLoss: 0.5869) (4.5 seq/s)
+  Epoch [2] Batch [75/313] Loss: 1.9678 (MSE: 1.3754, PLoss: 0.5924) (4.5 seq/s)
+  Epoch [2] Batch [100/313] Loss: 1.9696 (MSE: 1.3749, PLoss: 0.5947) (4.4 seq/s)
+  Epoch [2] Batch [125/313] Loss: 1.9660 (MSE: 1.3711, PLoss: 0.5949) (4.4 seq/s)
+  Epoch [2] Batch [150/313] Loss: 1.9604 (MSE: 1.3680, PLoss: 0.5925) (4.4 seq/s)
+  Epoch [2] Batch [175/313] Loss: 1.9560 (MSE: 1.3639, PLoss: 0.5921) (4.4 seq/s)
+  Epoch [2] Batch [200/313] Loss: 1.9617 (MSE: 1.3684, PLoss: 0.5933) (4.4 seq/s)
+  Epoch [2] Batch [225/313] Loss: 1.9652 (MSE: 1.3727, PLoss: 0.5925) (4.4 seq/s)
+  Epoch [2] Batch [250/313] Loss: 1.9644 (MSE: 1.3731, PLoss: 0.5913) (4.4 seq/s)
+  Epoch [2] Batch [275/313] Loss: 1.9697 (MSE: 1.3771, PLoss: 0.5926) (4.4 seq/s)
+  Epoch [2] Batch [300/313] Loss: 1.9710 (MSE: 1.3780, PLoss: 0.5930) (4.4 seq/s)
+  Epoch [2] Batch [313/313] Loss: 1.9724 (MSE: 1.3786, PLoss: 0.5938) (2.2 seq/s)
+Evaluating validation metric (on 150 sequences)...
+Epoch 2 Results:
+  Train Loss: 1.9724 (MSE: 1.3786, PLoss: 0.5938, time: 568.9s)
+  Val WP    : 0.6880 (t0: 0.7149, t1: 0.6611, time: 41.3s)
+  Current LR: 0.000050
+  [BEST] New best validation score! Saved to: runs\screen\fs_branch80_s42\best.pt
+
+============================================================
+Computing Stochastic Weight Averaged (SWA) Ensemble...
+SWA Ensemble WP on 150-seq subset: 0.6821 (t0: 0.7163, t1: 0.6479) vs Best Epoch: 0.6880
+  [INFO] Single best checkpoint retained.
+
+============================================================
+Training Complete! Final Best Validation WP: 0.6880
+Best checkpoint saved at: runs\screen\fs_branch80_s42\best.pt
+============================================================
+
+[AUTO-EXPORT] Exporting best model to ONNX: runs\screen\fs_branch80_s42\sub\model.onnx...
+Loading checkpoint from: runs\screen\fs_branch80_s42\best.pt
+Instantiating ScaledWunderGRU:
+  Input Dim  : 456
+  Hidden Dim : 80
+  Num Layers : 2
+  Use MoE    : False
+[WARNING] Auto-export/packaging encountered: Error(s) in loading state_dict for ScaledWunderGRU:
+	Missing key(s) in state_dict: "input_proj.0.weight", "input_proj.0.bias", "input_proj.1.weight", "input_proj.1.bias", "gru_layers.0.weight_ih_l0", "gru_layers.0.weight_hh_l0", "gru_layers.0.bias_ih_l0", "gru_layers.0.bias_hh_l0", "gru_layers.1.weight_ih_l0", "gru_layers.1.weight_hh_l0", "gru_layers.1.bias_ih_l0", "gru_layers.1.bias_hh_l0", "norms.0.weight", "norms.0.bias", "norms.1.weight", "norms.1.bias". 
+	Unexpected key(s) in state_dict: "branch_proj.0.0.weight", "branch_proj.0.0.bias", "branch_proj.0.1.weight", "branch_proj.0.1.bias", "branch_proj.1.0.weight", "branch_proj.1.0.bias", "branch_proj.1.1.weight", "branch_proj.1.1.bias", "branch_proj.2.0.weight", "branch_proj.2.0.bias", "branch_proj.2.1.weight", "branch_proj.2.1.bias", "branch_proj.3.0.weight", "branch_proj.3.0.bias", "branch_proj.3.1.weight", "branch_proj.3.1.bias", "branch_gru.0.weight_ih_l0", "branch_gru.0.weight_hh_l0", "branch_gru.0.bias_ih_l0", "branch_gru.0.bias_hh_l0", "branch_gru.1.weight_ih_l0", "branch_gru.1.weight_hh_l0", "branch_gru.1.bias_ih_l0", "branch_gru.1.bias_hh_l0", "branch_gru.2.weight_ih_l0", "branch_gru.2.weight_hh_l0", "branch_gru.2.bias_ih_l0", "branch_gru.2.bias_hh_l0", "branch_gru.3.weight_ih_l0", "branch_gru.3.weight_hh_l0", "branch_gru.3.bias_ih_l0", "branch_gru.3.bias_hh_l0", "branch_norm.0.weight", "branch_norm.0.bias", "branch_norm.1.weight", "branch_norm.1.bias", "branch_norm.2.weight", "branch_norm.2.bias", "branch_norm.3.weight", "branch_norm.3.bias", "fusion_proj.0.weight", "fusion_proj.0.bias", "fusion_proj.1.weight", "fusion_proj.1.bias", "fusion_gru.weight_ih_l0", "fusion_gru.weight_hh_l0", "fusion_gru.bias_ih_l0", "fusion_gru.bias_hh_l0", "fusion_norm.weight", "fusion_norm.bias". 

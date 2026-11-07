@@ -1,0 +1,31 @@
+valid 1873 seqs. official WP 0.684450; this script's wc 0.684450
+
+== 1. Score by group ==
+rest=0.0253: valid n=1044 share=0.557 metric-weight=0.623 WP=0.5789 (t0 0.5685 t1 0.5894) per-seq p10/50/90 [0.273 0.567 0.816] | train-sample n=75 WP=0.4020
+rest=0.038: valid n=431 share=0.230 metric-weight=0.081 WP=0.7302 (t0 0.7293 t1 0.7310) per-seq p10/50/90 [0.57  0.749 0.88 ] | train-sample n=54 WP=0.4462
+rest=0.076: valid n=398 share=0.212 metric-weight=0.296 WP=0.7992 (t0 0.7961 t1 0.8022) per-seq p10/50/90 [0.683 0.806 0.873] | train-sample n=21 WP=0.6207
+train-sample all groups WP=0.4764
+
+== Mix sensitivity: global WP if groups had these sequence shares (bootstrap-free reweighting by resampling) ==
+mix (0.59, 0.22, 0.2): WP 0.6737 +- 0.0080
+mix (0.57, 0.34, 0.09): WP 0.6515 +- 0.0120
+mix (0.8, 0.1, 0.1): WP 0.6299 +- 0.0076
+mix (0.9, 0.05, 0.05): WP 0.6016 +- 0.0095
+mix (1, 0, 0): WP 0.5765 +- 0.0094
+
+== 2. Held-out per-group recalibration (slope+intercept per group per target, fit on one half, scored on the other) ==
+fit half 0: base 0.68388 | per-group slope 0.68383 | slope+intercept 0.68422
+   coef (slope t0,t1 by group): [(np.float32(1.006), np.float32(1.002)), (np.float32(0.93), np.float32(0.919)), (np.float32(0.988), np.float32(0.962))] intercepts: [(np.float32(-0.013), np.float32(-0.037)), (np.float32(-0.065), np.float32(-0.166)), (np.float32(-0.046), np.float32(-0.121))]
+fit half 1: base 0.68495 | per-group slope 0.68493 | slope+intercept 0.68544
+   coef (slope t0,t1 by group): [(np.float32(1.038), np.float32(0.976)), (np.float32(0.948), np.float32(0.939)), (np.float32(0.974), np.float32(0.972))] intercepts: [(np.float32(-0.056), np.float32(-0.02)), (np.float32(-0.054), np.float32(-0.118)), (np.float32(-0.067), np.float32(-0.094))]
+
+== 3. Why groups differ ==
+rest=0.0253 valid: |t| mean 0.710 p50 0.657 p99 2.63 std t 0.967 std pred 0.723 distinct t0 101 corr(t0,t1) -0.809 target-change rate 0.134 update rate 0.316
+rest=0.0253 train: |t| mean 0.735 p50 0.657 p99 2.63 std t 0.979 std pred 0.482 distinct t0 77 corr(t0,t1) -0.809 target-change rate 0.070 update rate 0.203
+   within-group corr(per-seq WP, update rate) -0.233
+rest=0.038 valid: |t| mean 0.730 p50 0.469 p99 2.81 std t 0.944 std pred 0.952 distinct t0 26 corr(t0,t1) -0.846 target-change rate 0.165 update rate 0.112
+rest=0.038 train: |t| mean 0.759 p50 0.469 p99 2.81 std t 0.998 std pred 0.507 distinct t0 31 corr(t0,t1) -0.775 target-change rate 0.046 update rate 0.125
+   within-group corr(per-seq WP, update rate) 0.211
+rest=0.076 valid: |t| mean 0.767 p50 0.627 p99 3.89 std t 1.144 std pred 0.920 distinct t0 135 corr(t0,t1) -0.634 target-change rate 0.245 update rate 0.430
+rest=0.076 train: |t| mean 0.616 p50 0.376 p99 3.26 std t 0.915 std pred 0.624 distinct t0 85 corr(t0,t1) -0.539 target-change rate 0.136 update rate 0.390
+   within-group corr(per-seq WP, update rate) 0.171

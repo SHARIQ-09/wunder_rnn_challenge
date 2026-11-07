@@ -1,0 +1,5 @@
+[100/400] 29.3s
+[200/400] 47.9s
+[300/400] 68.1s
+[400/400] 90.3s
+Saved datasets/norm_stats_raw_ev_ema.npz: rows=8,000,000, std min=1.791e-02 max=2.888e+00

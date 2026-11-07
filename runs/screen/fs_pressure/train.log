@@ -1,0 +1,107 @@
+============================================================
+[TRAINING] Wunder RNN Challenge -- Scaled Training Pipeline
+============================================================
+Device         : cuda (NVIDIA GeForce RTX 3070 Laptop GPU)
+Mixed Precision: True (fp16)
+Batch Size     : 8 sequences in parallel
+Chunk Size     : 2048 timesteps per BPTT unroll
+Input Dim      : 508 raw features
+GRU Capacity   : 2 layers x 128 hidden units (Residuals + LayerNorm)
+Learning Rate  : 0.001 (AdamW + Cosine Decay)
+Loss Function  : HybridLoss (MSE: 1.0, Pearson: 1.0)
+Save Path      : runs\screen\fs_pressure
+============================================================
+Training Set   : 2,500 sequences available
+Validation Set : 1,873 sequences available (150 used per epoch)
+Model Parameters: 281,090 (~1.07 MB f32)
+MoE Gated Experts: False
+[NORM] Installed feature standardization (fold_into_input=False, clip=0.0)
+
+Starting training loop...
+
+--- Epoch 1/2 ---
+  Epoch [1] Batch [25/313] Loss: 2.2263 (MSE: 1.5343, PLoss: 0.6920) (3.0 seq/s)
+  Epoch [1] Batch [50/313] Loss: 2.1793 (MSE: 1.5081, PLoss: 0.6712) (3.2 seq/s)
+  Epoch [1] Batch [75/313] Loss: 2.1421 (MSE: 1.4859, PLoss: 0.6562) (3.3 seq/s)
+  Epoch [1] Batch [100/313] Loss: 2.1220 (MSE: 1.4712, PLoss: 0.6507) (3.3 seq/s)
+  Epoch [1] Batch [125/313] Loss: 2.0983 (MSE: 1.4541, PLoss: 0.6442) (3.4 seq/s)
+  Epoch [1] Batch [150/313] Loss: 2.0807 (MSE: 1.4416, PLoss: 0.6391) (3.4 seq/s)
+  Epoch [1] Batch [175/313] Loss: 2.0733 (MSE: 1.4368, PLoss: 0.6365) (3.4 seq/s)
+  Epoch [1] Batch [200/313] Loss: 2.0678 (MSE: 1.4334, PLoss: 0.6343) (3.4 seq/s)
+  Epoch [1] Batch [225/313] Loss: 2.0728 (MSE: 1.4378, PLoss: 0.6349) (3.4 seq/s)
+  Epoch [1] Batch [250/313] Loss: 2.0594 (MSE: 1.4293, PLoss: 0.6301) (3.4 seq/s)
+  Epoch [1] Batch [275/313] Loss: 2.0518 (MSE: 1.4251, PLoss: 0.6267) (3.4 seq/s)
+  Epoch [1] Batch [300/313] Loss: 2.0518 (MSE: 1.4258, PLoss: 0.6261) (3.4 seq/s)
+  Epoch [1] Batch [313/313] Loss: 2.0483 (MSE: 1.4238, PLoss: 0.6245) (1.7 seq/s)
+Evaluating validation metric (on 150 sequences)...
+Epoch 1 Results:
+  Train Loss: 2.0483 (MSE: 1.4238, PLoss: 0.6245, time: 731.8s)
+  Val WP    : 0.6593 (t0: 0.7026, t1: 0.6159, time: 45.5s)
+  Current LR: 0.000525
+  [BEST] New best validation score! Saved to: runs\screen\fs_pressure\best.pt
+
+--- Epoch 2/2 ---
+  Epoch [2] Batch [25/313] Loss: 1.9254 (MSE: 1.3375, PLoss: 0.5878) (3.4 seq/s)
+  Epoch [2] Batch [50/313] Loss: 1.9454 (MSE: 1.3617, PLoss: 0.5837) (3.5 seq/s)
+  Epoch [2] Batch [75/313] Loss: 1.9601 (MSE: 1.3712, PLoss: 0.5889) (3.5 seq/s)
+  Epoch [2] Batch [100/313] Loss: 1.9627 (MSE: 1.3713, PLoss: 0.5914) (3.5 seq/s)
+  Epoch [2] Batch [125/313] Loss: 1.9558 (MSE: 1.3655, PLoss: 0.5903) (3.5 seq/s)
+  Epoch [2] Batch [150/313] Loss: 1.9511 (MSE: 1.3630, PLoss: 0.5880) (3.5 seq/s)
+  Epoch [2] Batch [175/313] Loss: 1.9470 (MSE: 1.3590, PLoss: 0.5880) (3.5 seq/s)
+  Epoch [2] Batch [200/313] Loss: 1.9537 (MSE: 1.3641, PLoss: 0.5896) (3.5 seq/s)
+  Epoch [2] Batch [225/313] Loss: 1.9576 (MSE: 1.3686, PLoss: 0.5891) (3.5 seq/s)
+  Epoch [2] Batch [250/313] Loss: 1.9569 (MSE: 1.3689, PLoss: 0.5879) (3.5 seq/s)
+  Epoch [2] Batch [275/313] Loss: 1.9631 (MSE: 1.3736, PLoss: 0.5896) (3.5 seq/s)
+  Epoch [2] Batch [300/313] Loss: 1.9643 (MSE: 1.3743, PLoss: 0.5900) (3.4 seq/s)
+  Epoch [2] Batch [313/313] Loss: 1.9654 (MSE: 1.3747, PLoss: 0.5907) (1.7 seq/s)
+Evaluating validation metric (on 150 sequences)...
+Epoch 2 Results:
+  Train Loss: 1.9654 (MSE: 1.3747, PLoss: 0.5907, time: 728.2s)
+  Val WP    : 0.6933 (t0: 0.7175, t1: 0.6691, time: 44.3s)
+  Current LR: 0.000050
+  [BEST] New best validation score! Saved to: runs\screen\fs_pressure\best.pt
+
+============================================================
+Computing Stochastic Weight Averaged (SWA) Ensemble...
+SWA Ensemble WP on 150-seq subset: 0.6848 (t0: 0.7173, t1: 0.6522) vs Best Epoch: 0.6933
+  [INFO] Single best checkpoint retained.
+
+============================================================
+Training Complete! Final Best Validation WP: 0.6933
+Best checkpoint saved at: runs\screen\fs_pressure\best.pt
+============================================================
+
+[AUTO-EXPORT] Exporting best model to ONNX: runs\screen\fs_pressure\sub\model.onnx...
+Loading checkpoint from: runs\screen\fs_pressure\best.pt
+Instantiating ScaledWunderGRU:
+  Input Dim  : 508
+  Hidden Dim : 128
+  Num Layers : 2
+  Use MoE    : False
+Exporting to ONNX: runs\screen\fs_pressure\sub\model.onnx (Opset 17)...
+E:\wnn_starter_pack\wnn_connectome_starterpack\src\model.py:173: TracerWarning: Converting a tensor to a Python float might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  if float(self.norm_clip) > 0:
+E:\wnn_starter_pack\wnn_connectome_starterpack\wnn_env\Lib\site-packages\torch\onnx\symbolic_opset9.py:4277: UserWarning: Exporting a model to ONNX with a batch_size other than 1, with a variable length with GRU can cause an error when running the ONNX model with a different batch size. Make sure to save the model with a batch size of 1, or define the initial states (h0/c0) as inputs of the model. 
+  warnings.warn(
+[SUCCESS] ONNX model exported cleanly! File size: 1.08 MB (Budget: <= 20 MB)
+
+Verifying numerical parity between PyTorch and ONNX Runtime...
+Max absolute discrepancy:
+  Prediction  : 1.49e-08
+  Next Hidden0: 4.77e-07
+  Next Hidden1: 4.77e-07
+[SUCCESS] Full numerical parity verified!
+
+[AUTO-PACKAGE] Packaging verified submission archive: runs/screen/fs_pressure/sub.zip...
+============================================================
+      Wunder RNN Challenge -- Submission Packager
+============================================================
+Testing submission/solution.py locally...
+[ERROR] Verification failed on solution.py: cannot reshape array of size 112 into shape (1,1,508)
+Traceback (most recent call last):
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\src\package_submission.py", line 62, in package_submission
+    dummy_pred = predictor.predict(dummy_point)
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\runs\screen\fs_pressure\sub\solution.py", line 235, in predict
+    "features": feat.reshape(1, 1, self.input_dim),
+                ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+ValueError: cannot reshape array of size 112 into shape (1,1,508)

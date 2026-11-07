@@ -69,7 +69,6 @@ class PredictionModel:
         self.buf_144 = np.zeros(144, dtype=np.float32)
         self.prev_mid_0 = None
         self.prev_mid_1 = None
-        self.mid_0_start = 0.0
         self.ema_ret_fast = 0.0
         self.ema_ret_med = 0.0
         self.ema_ret_slow = 0.0
@@ -81,12 +80,12 @@ class PredictionModel:
         self.ema_var_proxy = 0.0
         self.ema_trade_vol = 0.0
         self.ema_money_flow = 0.0
+        self.ema_ret_long = 0.0
         self.ema_ofi1_med = 0.0
 
     def _reset_features(self):
         self.prev_mid_0 = None
         self.prev_mid_1 = None
-        self.mid_0_start = 0.0
         self.ema_ret_fast = 0.0
         self.ema_ret_med = 0.0
         self.ema_ret_slow = 0.0
@@ -98,12 +97,12 @@ class PredictionModel:
         self.ema_var_proxy = 0.0
         self.ema_trade_vol = 0.0
         self.ema_money_flow = 0.0
+        self.ema_ret_long = 0.0
         self.ema_ofi1_med = 0.0
 
     def _extract_32_features(self, x: np.ndarray) -> np.ndarray:
-        """Fast 32-feature extraction in ~13us per step using matrix projection."""
+        """Fast 32-feature extraction in ~18us per step using matrix projection and stationary inputs."""
         buf = self.buf_144
-        buf[:112] = x
         lin = x @ self.W
 
         p_bid_0_m = lin[0]
@@ -117,6 +116,11 @@ class PredictionModel:
         dp_sum = lin[6]
         dv_sum = lin[7]
 
+        # Raw features stationarized relative to mid price
+        buf[:112] = x
+        buf[0:22] = x[0:22] - mid_0
+        buf[52:74] = x[52:74] - mid_1
+
         var_b0 = max(float(x[0:11] @ x[0:11]) * (1.0 / 11.0) - p_bid_0_m * p_bid_0_m, 0.0)
         var_a0 = max(float(x[11:22] @ x[11:22]) * (1.0 / 11.0) - p_ask_0_m * p_ask_0_m, 0.0)
         mf = float(x[44:48] @ x[48:52])
@@ -124,7 +128,6 @@ class PredictionModel:
         if self.prev_mid_0 is None:
             ret_0 = 0.0
             ret_1 = 0.0
-            self.mid_0_start = mid_0
             self.ema_ret_fast = 0.0
             self.ema_ret_med = 0.0
             self.ema_ret_slow = 0.0
@@ -136,6 +139,7 @@ class PredictionModel:
             self.ema_var_proxy = 0.0
             self.ema_trade_vol = dv_sum
             self.ema_money_flow = mf
+            self.ema_ret_long = 0.0
             self.ema_ofi1_med = ofi_1
         else:
             ret_0 = mid_0 - self.prev_mid_0
@@ -154,6 +158,7 @@ class PredictionModel:
             self.ema_var_proxy = 0.05 * (ret_0 * ret_0) + 0.95 * self.ema_var_proxy
             self.ema_trade_vol = 0.05 * dv_sum + 0.95 * self.ema_trade_vol
             self.ema_money_flow = 0.05 * mf + 0.95 * self.ema_money_flow
+            self.ema_ret_long = 0.002 * ret_0 + 0.998 * self.ema_ret_long
             self.ema_ofi1_med = 0.05 * ofi_1 + 0.95 * self.ema_ofi1_med
 
         self.prev_mid_0 = mid_0
@@ -162,7 +167,7 @@ class PredictionModel:
         buf[112] = p_ask_0_m - p_bid_0_m
         buf[113] = np.sqrt(var_b0 + 1e-6)
         buf[114] = np.sqrt(var_a0 + 1e-6)
-        buf[115] = mid_0
+        buf[115] = p_ask_0_m - p_bid_0_m
         buf[116] = ofi_0
         buf[117] = lin[8]
         buf[118] = lin[9]
@@ -190,7 +195,7 @@ class PredictionModel:
         buf[139] = self.ema_var_proxy
         buf[140] = self.ema_trade_vol
         buf[141] = self.ema_money_flow
-        buf[142] = mid_0 - self.mid_0_start
+        buf[142] = self.ema_ret_long
         buf[143] = self.ema_ofi1_med - self.ema_ofi_med
 
         return buf

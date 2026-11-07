@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\src\train_event.py", line 143, in <module>
+    main()
+    ~~~~^^
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\src\train_event.py", line 109, in main
+    (em, es), (rm, rs) = norm_stats(args.train_path, np.random.default_rng(1).choice(train_rg, min(100, len(train_rg)), replace=False))
+                         ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\src\train_event.py", line 61, in norm_stats
+    ev_x, row_x, _ = event_inputs(raw)
+                     ~~~~~~~~~~~~^^^^^
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\src\event_model.py", line 43, in event_inputs
+    ev_x = np.hstack([build_features(raw, "slim")[ev_pos], ev_extra.astype(np.float32)])
+                      ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\src\feature_sets.py", line 166, in build_features
+    out = np.empty((x.shape[0], nb + N_EV_EMA + extra), dtype=np.float32)
+numpy._core._exceptions._ArrayMemoryError: Unable to allocate 35.0 MiB for an array with shape (20000, 459) and data type float32

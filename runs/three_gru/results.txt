@@ -1,0 +1,3 @@
+checkpoints_h80_ev_s101/best.pt [raw_ev_ema]  FULL-VALID WP=0.679957 t0=0.675243 t1=0.684671 rows=3528273
+checkpoints_h80_v144_s102/best.pt [v144]  FULL-VALID WP=0.679899 t0=0.675382 t1=0.684417 rows=3528273
+checkpoints_h80_ev_s103/best.pt [raw_ev_ema]  FULL-VALID WP=0.680924 t0=0.676831 t1=0.685016 rows=3528273

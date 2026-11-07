@@ -1,0 +1,3 @@
+features 480
+current row + EMA history LightGBM: t0=0.6132 t1=0.6469 WP=0.6300
+gain share by block: {'raw144': np.float64(0.431), 'dev_ema0.1': np.float64(0.14), 'dev_ema0.01': np.float64(0.155), 'dev_ema0.001': np.float64(0.274)}

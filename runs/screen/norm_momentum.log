@@ -1,0 +1,5 @@
+[100/400] 27.6s
+[200/400] 51.6s
+[300/400] 76.1s
+[400/400] 101.4s
+Saved datasets/norm_stats_momentum.npz: rows=8,000,000, std min=1.791e-02 max=5.964e+00

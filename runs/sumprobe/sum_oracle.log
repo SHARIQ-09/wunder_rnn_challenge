@@ -1,0 +1,5 @@
+(a) repeat price rows: 2,954,121 over 31,029 distinct; same t0+t1 as first time seen: 0.5410
+(b,c) all: corr(pred sum, true sum) 0.4983  corr(pred diff, true diff) 0.5362 | WP base 0.6352  true sum 0.6735  true diff 0.9747
+(b,c) group 0: corr(pred sum, true sum) 0.4309  corr(pred diff, true diff) 0.4747 | WP base 0.5422  true sum 0.5912  true diff 0.9800
+(b,c) group 1: corr(pred sum, true sum) 0.2305  corr(pred diff, true diff) 0.6543 | WP base 0.7300  true sum 0.7695  true diff 0.9772
+(b,c) group 2: corr(pred sum, true sum) 0.3269  corr(pred diff, true diff) 0.6853 | WP base 0.7917  true sum 0.8442  true diff 0.9619

@@ -38,7 +38,24 @@ from utils import (
 )
 from src.dataset import StreamingSequenceDataset
 from src.features import CausalFeatureExtractor, TOTAL_FEATURES
-from src.model import ScaledWunderGRU, HybridLoss, WunderGRU
+from src.feature_sets import feature_dim
+from src.model import ScaledWunderGRU, BranchGRU, BranchClsGRU, HybridLoss, WunderGRU
+
+
+class _TrainKeys(torch.utils.data.Dataset):
+    """Keeps only the keys used for training so datasets with different columns can be concatenated."""
+
+    KEYS = ("features", "targets", "need_prediction")
+
+    def __init__(self, base):
+        self.base = base
+
+    def __len__(self):
+        return len(self.base)
+
+    def __getitem__(self, idx):
+        item = self.base[idx]
+        return {k: item[k] for k in self.KEYS}
 
 
 def parse_args() -> argparse.Namespace:
@@ -63,7 +80,8 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--epochs", type=int, default=3, help="Number of training epochs")
     parser.add_argument("--batch_size", type=int, default=4, help="Sequence batch size")
-    parser.add_argument("--chunk_size", type=int, default=2048, help="BPTT chunk size")
+    parser.add_argument("--chunk_size", type=int, default=20000, help="BPTT chunk size (default: 20000 for full-sequence pooled batch)")
+    parser.add_argument("--feature_set", default="v144", help="Feature set from src/feature_sets.py; input_dim follows it")
     parser.add_argument("--input_dim", type=int, default=TOTAL_FEATURES, help="Input feature dimension (144: 112 raw + 32 engineered)")
     parser.add_argument("--hidden_dim", type=int, default=128, help="GRU hidden state dimension (default: 128)")
     parser.add_argument("--num_layers", type=int, default=2, help="Number of GRU layers")
@@ -74,12 +92,53 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--mse_weight", type=float, default=1.0, help="Weight for Weighted MSE loss")
     parser.add_argument("--pearson_weight", type=float, default=1.0, help="Weight for Negative Pearson loss")
     parser.add_argument("--use_moe", action="store_true", default=False, help="Use Volatility-Gated MoE Dual Experts")
+    parser.add_argument("--branch_gru", action="store_true", help="Use BranchGRU (price/volume/trade/a branches + fusion GRU; v144 or raw_ev_ema)")
+    parser.add_argument("--cls_head", action="store_true", help="With --branch_gru: use BranchClsGRU (feed-forward layer per branch, classification head)")
+    parser.add_argument("--ce_weight", type=float, default=0.5, help="Cross-entropy weight for --cls_head")
+    parser.add_argument("--mem_dim", type=int, default=0, help="Long-memory EMA bank width (0 = off), see LongMemory")
+    parser.add_argument("--mem_scales", type=float, nargs="+", default=[20.0, 200.0, 2000.0, 10000.0],
+                        help="Long-memory EMA timescales in steps")
     parser.add_argument(
         "--val_sequences",
         type=int,
         default=50,
         help="Number of validation sequences to evaluate per epoch (-1 for full set)",
     )
+    parser.add_argument(
+        "--val_subset_seed",
+        type=int,
+        default=1234,
+        help="Seed for the random per-epoch validation subset (spread across the whole file)",
+    )
+    parser.add_argument(
+        "--final_full_val",
+        action="store_true",
+        help="Evaluate the final epoch and SWA weights on ALL validation sequences and select on that",
+    )
+    parser.add_argument(
+        "--norm_stats",
+        type=str,
+        default=None,
+        help="Path to norm_stats.npz (from src/compute_norm_stats.py) to enable input standardization",
+    )
+    parser.add_argument("--norm_clip", type=float, default=0.0, help="Clip standardized features to +/- this value (0 = off)")
+    parser.add_argument(
+        "--extra_train_path",
+        type=str,
+        default=None,
+        help="Additional parquet (e.g. valid.parquet) appended to the training set",
+    )
+    parser.add_argument("--num_workers", type=int, default=0,
+                        help="DataLoader worker processes for training (parquet read + feature extraction run in parallel)")
+    parser.add_argument("--train_rg_range", type=int, nargs=2, default=None,
+                        help="Use only row groups [start, end) of --train_path")
+    parser.add_argument("--val_rg_range", type=int, nargs=2, default=None,
+                        help="Use only row groups [start, end) of --valid_path for validation")
+    parser.add_argument("--train_rg_file", type=str, default=None, help=".npy list of row groups of --train_path to use")
+    parser.add_argument("--val_rg_file", type=str, default=None, help=".npy list of row groups of --valid_path to validate on")
+    parser.add_argument("--scored_weight", type=float, default=None,
+                        help="If set and is_scored exists in training data, loss weight of scored rows "
+                             "relative to 1.0 for unscored rows (inf = scored rows only)")
     parser.add_argument(
         "--max_train_sequences",
         type=int,
@@ -90,6 +149,11 @@ def parse_args() -> argparse.Namespace:
         "--no_amp",
         action="store_true",
         help="Disable automatic mixed precision (fp16)",
+    )
+    parser.add_argument(
+        "--no_aligned_loss",
+        action="store_true",
+        help="Use legacy unaligned loss (unclipped MSE and chunk Pearson)",
     )
     parser.add_argument(
         "--resume",
@@ -144,14 +208,22 @@ def evaluate_model(
     chunk_size: int = 2048,
     max_sequences: int = 50,
     use_amp: bool = True,
+    indices: Optional[List[int]] = None,
 ) -> Dict[str, float]:
-    """Evaluates the model on validation sequences using the official competition metric."""
+    """Evaluates the model on validation sequences using the official competition metric.
+
+    If `indices` is given, exactly those dataset positions are evaluated; otherwise the
+    first `max_sequences` (or all when max_sequences <= 0).
+    """
     model.eval()
     accumulator = GlobalAccumulator()
-    num_eval = min(len(val_dataset), max_sequences) if max_sequences > 0 else len(val_dataset)
+    if indices is None:
+        num_eval = min(len(val_dataset), max_sequences) if max_sequences > 0 else len(val_dataset)
+        indices = list(range(num_eval))
+    num_eval = len(indices)
 
     val_loader = DataLoader(
-        val_dataset,
+        torch.utils.data.Subset(val_dataset, indices),
         batch_size=1,
         shuffle=False,
         num_workers=0,
@@ -159,8 +231,6 @@ def evaluate_model(
 
     t0 = time.time()
     for idx, batch in enumerate(val_loader):
-        if idx >= num_eval:
-            break
 
         raw_features = batch["features"].to(device)  # (1, 20000, 112)
         targets = batch["targets"].cpu().numpy()[0]  # (20000, 2)
@@ -207,6 +277,7 @@ def train_epoch(
     grad_clip: float = 1.0,
     use_amp: bool = True,
     epoch: int = 1,
+    scored_weight: Optional[float] = None,
 ) -> Dict[str, float]:
     """Executes one training epoch using Truncated BPTT across chunked sub-sequences."""
     model.train()
@@ -221,6 +292,13 @@ def train_epoch(
         raw_features = batch["features"].to(device)         # (B, 20000, 112)
         targets = batch["targets"].to(device)               # (B, 20000, 2)
         need_pred = batch["need_prediction"].to(device)     # (B, 20000)
+        row_w = None
+        if scored_weight is not None and "is_scored" in batch:
+            scored = batch["is_scored"].to(device)
+            if scored_weight == float("inf"):
+                need_pred = need_pred & scored
+            else:
+                row_w = 1.0 + (scored_weight - 1.0) * scored.float()
 
         # Causal feature computation on GPU if enabled
         with torch.no_grad():
@@ -244,13 +322,16 @@ def train_epoch(
             chunk_x = features[:, start_step:end_step]
             chunk_y = targets[:, start_step:end_step]
             chunk_m = need_pred[:, start_step:end_step]
+            chunk_w = row_w[:, start_step:end_step] if row_w is not None else None
 
             optimizer.zero_grad(set_to_none=True)
 
             with torch.amp.autocast("cuda", enabled=(use_amp and device.type == "cuda")):
                 pred, next_hidden = model(chunk_x, hidden)
-                loss_dict = criterion(pred, chunk_y, chunk_m)
+                loss_dict = criterion(pred, chunk_y, chunk_m, chunk_w)
                 loss = loss_dict["loss"]
+                if isinstance(model, BranchClsGRU):
+                    loss = loss + model.ce_weight * model.ce_loss(chunk_y, chunk_m)
 
             scaler.scale(loss).backward()
             scaler.unscale_(optimizer)
@@ -293,6 +374,8 @@ def train_epoch(
 
 def main():
     args = parse_args()
+    if args.feature_set != "v144":
+        args.input_dim = feature_dim(args.feature_set)
     save_dir = Path(args.save_dir)
     save_dir.mkdir(parents=True, exist_ok=True)
 
@@ -315,31 +398,64 @@ def main():
 
     # 1. Datasets
     train_rg = list(range(args.max_train_sequences)) if args.max_train_sequences else None
-    train_dataset = StreamingSequenceDataset(args.train_path, row_groups=train_rg)
-    val_dataset = StreamingSequenceDataset(args.valid_path)
+    if args.train_rg_range:
+        train_rg = list(range(*args.train_rg_range))
+    if args.train_rg_file:
+        train_rg = np.load(args.train_rg_file).tolist()
+    train_dataset = StreamingSequenceDataset(args.train_path, row_groups=train_rg, feature_set=args.feature_set)
+    if args.extra_train_path:
+        extra = StreamingSequenceDataset(args.extra_train_path, feature_set=args.feature_set)
+        train_dataset = torch.utils.data.ConcatDataset(
+            [_TrainKeys(train_dataset), _TrainKeys(extra)]
+        )
+        print(f"Extra Training : +{len(extra):,} sequences from {args.extra_train_path}", flush=True)
+    val_rg = list(range(*args.val_rg_range)) if args.val_rg_range else None
+    if args.val_rg_file:
+        val_rg = np.load(args.val_rg_file).tolist()
+    val_dataset = StreamingSequenceDataset(args.valid_path, row_groups=val_rg, feature_set=args.feature_set)
+
+    # Fixed random validation subset spread over the whole file (first-N is biased)
+    if args.val_sequences > 0 and args.val_sequences < len(val_dataset):
+        val_rng = np.random.default_rng(args.val_subset_seed)
+        val_indices = sorted(val_rng.choice(len(val_dataset), size=args.val_sequences, replace=False).tolist())
+    else:
+        val_indices = list(range(len(val_dataset)))
+    full_val_indices = list(range(len(val_dataset)))
 
     print(f"Training Set   : {len(train_dataset):,} sequences available", flush=True)
-    print(f"Validation Set : {len(val_dataset):,} sequences available", flush=True)
+    print(f"Validation Set : {len(val_dataset):,} sequences available ({len(val_indices)} used per epoch)", flush=True)
 
     train_loader = DataLoader(
         train_dataset,
         batch_size=args.batch_size,
         shuffle=True,
-        num_workers=0,  # Safe on Windows
+        num_workers=args.num_workers,
+        persistent_workers=args.num_workers > 0,
+        prefetch_factor=(2 if args.num_workers > 0 else None),
         pin_memory=(device.type == "cuda"),
     )
 
     # 2. Modules
     feature_extractor = None
 
-    model = ScaledWunderGRU(
-        input_dim=args.input_dim,
-        hidden_dim=args.hidden_dim,
-        num_layers=args.num_layers,
-        output_dim=len(TARGET_COLUMNS),
-        dropout=args.dropout,
-        use_moe=args.use_moe,
-    ).to(device)
+    if args.branch_gru:
+        branch_cls = BranchClsGRU if args.cls_head else BranchGRU
+        model = branch_cls(input_dim=args.input_dim, hidden_dim=args.hidden_dim,
+                           output_dim=len(TARGET_COLUMNS), dropout=args.dropout).to(device)
+        if args.cls_head:
+            model.ce_weight = args.ce_weight
+            print(f"Classification head: {model.n_cls} classes, CE weight {args.ce_weight}", flush=True)
+    else:
+        model = ScaledWunderGRU(
+            input_dim=args.input_dim,
+            hidden_dim=args.hidden_dim,
+            num_layers=args.num_layers,
+            output_dim=len(TARGET_COLUMNS),
+            dropout=args.dropout,
+            use_moe=args.use_moe,
+            mem_dim=args.mem_dim,
+            mem_scales=tuple(args.mem_scales),
+        ).to(device)
 
     total_params = sum(p.numel() for p in model.parameters())
     print(f"Model Parameters: {total_params:,} (~{(total_params*4)/(1024*1024):.2f} MB f32)")
@@ -348,6 +464,7 @@ def main():
     criterion = HybridLoss(
         mse_weight=args.mse_weight,
         pearson_weight=args.pearson_weight,
+        aligned=(not args.no_aligned_loss),
     )
     optimizer = torch.optim.AdamW(
         model.parameters(),
@@ -366,13 +483,16 @@ def main():
     epoch_checkpoints = []
 
     model_config = {
-        "model_type": "ScaledWunderGRU",
+        "model_type": ("BranchClsGRU" if args.cls_head else "BranchGRU") if args.branch_gru else "ScaledWunderGRU",
         "input_dim": args.input_dim,
+        "feature_set": args.feature_set,
         "hidden_dim": args.hidden_dim,
         "num_layers": args.num_layers,
         "output_dim": len(TARGET_COLUMNS),
         "dropout": args.dropout,
         "use_moe": args.use_moe,
+        "mem_dim": args.mem_dim,
+        "mem_scales": list(args.mem_scales),
     }
 
     torch.manual_seed(args.seed)
@@ -400,6 +520,22 @@ def main():
         prior_score = checkpoint.get("val_score", 0.0)
         print(f"[RESUME] Loaded checkpoint from {args.resume} (prior WP: {prior_score:.4f}, reset_epoch={args.reset_epoch})", flush=True)
 
+    # Input standardization. When warm-starting a raw-feature checkpoint, fold the stats
+    # into the first Linear layer so the starting function is unchanged.
+    if args.norm_stats:
+        stats = np.load(args.norm_stats)
+        mean_t = torch.from_numpy(stats["mean"]).float()
+        std_t = torch.from_numpy(stats["std"]).float()
+        if model.has_norm:
+            print("[NORM] Checkpoint already contains normalization stats; keeping them.", flush=True)
+        else:
+            fold = bool(args.resume)
+            model.set_norm_stats(mean_t, std_t, clip=args.norm_clip, fold_into_input=fold)
+            if fold:
+                optimizer.state.clear()  # Adam moments refer to the old parametrization
+                best_val_wp = -1.0
+            print(f"[NORM] Installed feature standardization (fold_into_input={fold}, clip={args.norm_clip})", flush=True)
+
     # 3. Training Loop
     print("\nStarting training loop...", flush=True)
     for epoch in range(start_epoch, args.epochs + 1):
@@ -418,6 +554,7 @@ def main():
             grad_clip=args.grad_clip,
             use_amp=use_amp,
             epoch=epoch,
+            scored_weight=args.scored_weight,
         )
 
         scheduler.step()
@@ -431,6 +568,7 @@ def main():
             feature_extractor=feature_extractor,
             chunk_size=args.chunk_size,
             max_sequences=args.val_sequences,
+            indices=val_indices,
             use_amp=use_amp,
         )
 
@@ -484,22 +622,46 @@ def main():
         for k in epoch_checkpoints[0].keys():
             swa_state[k] = torch.stack([ckpt[k].float() for ckpt in epoch_checkpoints]).mean(dim=0)
 
-        # Load SWA weights into model and evaluate
-        model.load_state_dict({k: v.to(device) for k, v in swa_state.items()})
-        swa_metrics = evaluate_model(
-            model=model,
-            val_dataset=val_dataset,
-            device=device,
-            chunk_size=args.chunk_size,
-            max_sequences=args.val_sequences,
-            use_amp=use_amp,
-        )
-        swa_wp = swa_metrics["weighted_pearson"]
-        swa_t0 = swa_metrics["t0"]
-        swa_t1 = swa_metrics["t1"]
-        print(f"SWA Ensemble Validation WP: {swa_wp:.4f} (t0: {swa_t0:.4f}, t1: {swa_t1:.4f}) vs Best Epoch: {best_val_wp:.4f}", flush=True)
+        sel_indices = full_val_indices if args.final_full_val else val_indices
+        sel_name = "FULL valid" if args.final_full_val else f"{len(val_indices)}-seq subset"
 
-        if swa_wp >= best_val_wp:
+        if args.extra_train_path:
+            # Valid data was trained on: selection by valid is meaningless, always keep SWA.
+            print("[INFO] Valid data used for training -> saving SWA weights without selection.", flush=True)
+            torch.save(
+                {"epoch": "swa_ensemble", "model_state_dict": swa_state, "val_score": float("nan"),
+                 "model_config": model_config},
+                best_path,
+            )
+            swa_wp = None
+        elif args.final_full_val:
+            # Re-score the best single epoch on the full set so the comparison is apples to apples
+            best_ckpt = torch.load(best_path, map_location=device)
+            model.load_state_dict(best_ckpt["model_state_dict"])
+            best_full = evaluate_model(model=model, val_dataset=val_dataset, device=device,
+                                       chunk_size=args.chunk_size, use_amp=use_amp, indices=sel_indices)
+            best_val_wp = best_full["weighted_pearson"]
+            print(f"Best single epoch on {sel_name}: {best_val_wp:.4f} (t0: {best_full['t0']:.4f}, t1: {best_full['t1']:.4f})", flush=True)
+
+        if not args.extra_train_path:
+            # Load SWA weights into model and evaluate
+            model.load_state_dict({k: v.to(device) for k, v in swa_state.items()})
+            swa_metrics = evaluate_model(
+                model=model,
+                val_dataset=val_dataset,
+                device=device,
+                chunk_size=args.chunk_size,
+                use_amp=use_amp,
+                indices=sel_indices,
+            )
+            swa_wp = swa_metrics["weighted_pearson"]
+            swa_t0 = swa_metrics["t0"]
+            swa_t1 = swa_metrics["t1"]
+            print(f"SWA Ensemble WP on {sel_name}: {swa_wp:.4f} (t0: {swa_t0:.4f}, t1: {swa_t1:.4f}) vs Best Epoch: {best_val_wp:.4f}", flush=True)
+
+        if swa_wp is None:
+            pass
+        elif swa_wp >= best_val_wp:
             best_val_wp = swa_wp
             torch.save(
                 {

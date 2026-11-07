@@ -1,0 +1,82 @@
+============================================================
+[TRAINING] Wunder RNN Challenge -- Scaled Training Pipeline
+============================================================
+Device         : cuda (NVIDIA GeForce RTX 3070 Laptop GPU)
+Mixed Precision: True (fp16)
+Batch Size     : 8 sequences in parallel
+Chunk Size     : 2048 timesteps per BPTT unroll
+Input Dim      : 456 raw features
+GRU Capacity   : 2 layers x 128 hidden units (Residuals + LayerNorm)
+Learning Rate  : 0.001 (AdamW + Cosine Decay)
+Loss Function  : HybridLoss (MSE: 1.0, Pearson: 1.0)
+Save Path      : runs\screen\fs_raw_ev_ema_mem24
+============================================================
+Training Set   : 2,500 sequences available
+Validation Set : 1,873 sequences available (150 used per epoch)
+Model Parameters: 310,490 (~1.18 MB f32)
+MoE Gated Experts: False
+[NORM] Installed feature standardization (fold_into_input=False, clip=0.0)
+
+Starting training loop...
+
+--- Epoch 1/2 ---
+  Epoch [1] Batch [25/313] Loss: 2.2356 (MSE: 1.5371, PLoss: 0.6985) (5.0 seq/s)
+  Epoch [1] Batch [50/313] Loss: 2.1879 (MSE: 1.5129, PLoss: 0.6750) (5.3 seq/s)
+  Epoch [1] Batch [75/313] Loss: 2.1488 (MSE: 1.4893, PLoss: 0.6595) (5.4 seq/s)
+  Epoch [1] Batch [100/313] Loss: 2.1276 (MSE: 1.4744, PLoss: 0.6532) (5.5 seq/s)
+  Epoch [1] Batch [125/313] Loss: 2.1014 (MSE: 1.4561, PLoss: 0.6453) (5.6 seq/s)
+  Epoch [1] Batch [150/313] Loss: 2.0828 (MSE: 1.4428, PLoss: 0.6400) (5.6 seq/s)
+  Epoch [1] Batch [175/313] Loss: 2.0757 (MSE: 1.4383, PLoss: 0.6373) (5.6 seq/s)
+  Epoch [1] Batch [200/313] Loss: 2.0686 (MSE: 1.4342, PLoss: 0.6345) (5.7 seq/s)
+  Epoch [1] Batch [225/313] Loss: 2.0735 (MSE: 1.4386, PLoss: 0.6350) (5.7 seq/s)
+  Epoch [1] Batch [250/313] Loss: 2.0605 (MSE: 1.4303, PLoss: 0.6303) (5.7 seq/s)
+  Epoch [1] Batch [275/313] Loss: 2.0523 (MSE: 1.4256, PLoss: 0.6267) (5.7 seq/s)
+  Epoch [1] Batch [300/313] Loss: 2.0525 (MSE: 1.4264, PLoss: 0.6261) (5.7 seq/s)
+  Epoch [1] Batch [313/313] Loss: 2.0494 (MSE: 1.4247, PLoss: 0.6247) (2.9 seq/s)
+Evaluating validation metric (on 150 sequences)...
+Epoch 1 Results:
+  Train Loss: 2.0494 (MSE: 1.4247, PLoss: 0.6247, time: 438.6s)
+  Val WP    : 0.6597 (t0: 0.7022, t1: 0.6173, time: 36.9s)
+  Current LR: 0.000525
+  [BEST] New best validation score! Saved to: runs\screen\fs_raw_ev_ema_mem24\best.pt
+
+--- Epoch 2/2 ---
+  Epoch [2] Batch [25/313] Loss: 1.9163 (MSE: 1.3318, PLoss: 0.5845) (5.7 seq/s)
+  Epoch [2] Batch [50/313] Loss: 1.9423 (MSE: 1.3597, PLoss: 0.5827) (5.7 seq/s)
+  Epoch [2] Batch [75/313] Loss: 1.9559 (MSE: 1.3686, PLoss: 0.5873) (5.8 seq/s)
+  Epoch [2] Batch [100/313] Loss: 1.9593 (MSE: 1.3693, PLoss: 0.5901) (5.8 seq/s)
+  Epoch [2] Batch [125/313] Loss: 1.9550 (MSE: 1.3651, PLoss: 0.5899) (5.8 seq/s)
+  Epoch [2] Batch [150/313] Loss: 1.9501 (MSE: 1.3625, PLoss: 0.5876) (5.8 seq/s)
+  Epoch [2] Batch [175/313] Loss: 1.9455 (MSE: 1.3582, PLoss: 0.5873) (5.8 seq/s)
+  Epoch [2] Batch [200/313] Loss: 1.9518 (MSE: 1.3630, PLoss: 0.5888) (5.8 seq/s)
+  Epoch [2] Batch [225/313] Loss: 1.9561 (MSE: 1.3677, PLoss: 0.5884) (5.8 seq/s)
+  Epoch [2] Batch [250/313] Loss: 1.9555 (MSE: 1.3683, PLoss: 0.5872) (5.8 seq/s)
+  Epoch [2] Batch [275/313] Loss: 1.9621 (MSE: 1.3731, PLoss: 0.5890) (5.8 seq/s)
+  Epoch [2] Batch [300/313] Loss: 1.9641 (MSE: 1.3743, PLoss: 0.5898) (5.7 seq/s)
+  Epoch [2] Batch [313/313] Loss: 1.9654 (MSE: 1.3748, PLoss: 0.5906) (2.9 seq/s)
+Evaluating validation metric (on 150 sequences)...
+Epoch 2 Results:
+  Train Loss: 1.9654 (MSE: 1.3748, PLoss: 0.5906, time: 434.9s)
+  Val WP    : 0.6920 (t0: 0.7183, t1: 0.6657, time: 36.0s)
+  Current LR: 0.000050
+  [BEST] New best validation score! Saved to: runs\screen\fs_raw_ev_ema_mem24\best.pt
+
+============================================================
+Computing Stochastic Weight Averaged (SWA) Ensemble...
+SWA Ensemble WP on 150-seq subset: 0.6830 (t0: 0.7174, t1: 0.6487) vs Best Epoch: 0.6920
+  [INFO] Single best checkpoint retained.
+
+============================================================
+Training Complete! Final Best Validation WP: 0.6920
+Best checkpoint saved at: runs\screen\fs_raw_ev_ema_mem24\best.pt
+============================================================
+
+[AUTO-EXPORT] Exporting best model to ONNX: runs\screen\fs_raw_ev_ema_mem24\sub\model.onnx...
+Loading checkpoint from: runs\screen\fs_raw_ev_ema_mem24\best.pt
+Instantiating ScaledWunderGRU:
+  Input Dim  : 456
+  Hidden Dim : 128
+  Num Layers : 2
+  Use MoE    : False
+[WARNING] Auto-export/packaging encountered: Error(s) in loading state_dict for ScaledWunderGRU:
+	Unexpected key(s) in state_dict: "mem_in.weight", "mem_in.bias", "mem_out.0.weight", "mem_out.0.bias", "mem_out.1.weight", "mem_out.1.bias". 

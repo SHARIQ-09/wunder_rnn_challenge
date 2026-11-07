@@ -1,0 +1,2 @@
+train seqs 10607 counts [5814 3488 1305] max distance from group value 3.162527084350775e-05
+valid seqs 1873 counts [1044  431  398] max distance from group value 3.162527084350775e-05

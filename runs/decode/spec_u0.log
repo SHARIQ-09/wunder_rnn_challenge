@@ -1,0 +1,128 @@
+============================================================
+[TRAINING] Wunder RNN Challenge -- Scaled Training Pipeline
+============================================================
+Device         : cuda (NVIDIA GeForce RTX 3070 Laptop GPU)
+Mixed Precision: True (fp16)
+Batch Size     : 8 sequences in parallel
+Chunk Size     : 2048 timesteps per BPTT unroll
+Input Dim      : 456 raw features
+GRU Capacity   : 2 layers x 128 hidden units (Residuals + LayerNorm)
+Learning Rate  : 0.0002 (AdamW + Cosine Decay)
+Loss Function  : HybridLoss (MSE: 1.0, Pearson: 1.5)
+Save Path      : checkpoints_spec_u0
+============================================================
+Training Set   : 4,557 sequences available
+Validation Set : 697 sequences available (150 used per epoch)
+Model Parameters: 274,434 (~1.05 MB f32)
+MoE Gated Experts: False
+[RESUME] Loaded checkpoint from checkpoints_raw_ev_ema_s21/best.pt (prior WP: 0.6809, reset_epoch=True)
+
+Starting training loop...
+
+--- Epoch 1/2 ---
+  Epoch [1] Batch [25/570] Loss: 2.5847 (MSE: 1.5630, PLoss: 0.6811) (5.4 seq/s)
+  Epoch [1] Batch [50/570] Loss: 2.5284 (MSE: 1.4959, PLoss: 0.6883) (5.6 seq/s)
+  Epoch [1] Batch [75/570] Loss: 2.5317 (MSE: 1.4928, PLoss: 0.6925) (5.7 seq/s)
+  Epoch [1] Batch [100/570] Loss: 2.5224 (MSE: 1.4876, PLoss: 0.6899) (5.7 seq/s)
+  Epoch [1] Batch [125/570] Loss: 2.5382 (MSE: 1.5007, PLoss: 0.6917) (5.7 seq/s)
+  Epoch [1] Batch [150/570] Loss: 2.5297 (MSE: 1.4918, PLoss: 0.6919) (5.7 seq/s)
+  Epoch [1] Batch [175/570] Loss: 2.5273 (MSE: 1.4915, PLoss: 0.6906) (5.6 seq/s)
+  Epoch [1] Batch [200/570] Loss: 2.5295 (MSE: 1.4933, PLoss: 0.6908) (5.6 seq/s)
+  Epoch [1] Batch [225/570] Loss: 2.5280 (MSE: 1.4920, PLoss: 0.6907) (5.5 seq/s)
+  Epoch [1] Batch [250/570] Loss: 2.5290 (MSE: 1.4938, PLoss: 0.6901) (5.5 seq/s)
+  Epoch [1] Batch [275/570] Loss: 2.5305 (MSE: 1.4958, PLoss: 0.6898) (5.5 seq/s)
+  Epoch [1] Batch [300/570] Loss: 2.5354 (MSE: 1.4990, PLoss: 0.6909) (5.4 seq/s)
+  Epoch [1] Batch [325/570] Loss: 2.5364 (MSE: 1.5010, PLoss: 0.6902) (5.4 seq/s)
+  Epoch [1] Batch [350/570] Loss: 2.5425 (MSE: 1.5078, PLoss: 0.6898) (5.4 seq/s)
+  Epoch [1] Batch [375/570] Loss: 2.5458 (MSE: 1.5099, PLoss: 0.6906) (5.4 seq/s)
+  Epoch [1] Batch [400/570] Loss: 2.5499 (MSE: 1.5128, PLoss: 0.6914) (5.3 seq/s)
+  Epoch [1] Batch [425/570] Loss: 2.5491 (MSE: 1.5123, PLoss: 0.6912) (5.3 seq/s)
+  Epoch [1] Batch [450/570] Loss: 2.5512 (MSE: 1.5143, PLoss: 0.6912) (5.3 seq/s)
+  Epoch [1] Batch [475/570] Loss: 2.5490 (MSE: 1.5120, PLoss: 0.6913) (5.3 seq/s)
+  Epoch [1] Batch [500/570] Loss: 2.5495 (MSE: 1.5115, PLoss: 0.6920) (5.2 seq/s)
+  Epoch [1] Batch [525/570] Loss: 2.5454 (MSE: 1.5075, PLoss: 0.6920) (5.2 seq/s)
+  Epoch [1] Batch [550/570] Loss: 2.5452 (MSE: 1.5081, PLoss: 0.6914) (5.2 seq/s)
+  Epoch [1] Batch [570/570] Loss: 2.5455 (MSE: 1.5082, PLoss: 0.6915) (3.2 seq/s)
+Evaluating validation metric (on 150 sequences)...
+Epoch 1 Results:
+  Train Loss: 2.5455 (MSE: 1.5082, PLoss: 0.6915, time: 882.6s)
+  Val WP    : 0.4411 (t0: 0.4549, t1: 0.4274, time: 43.6s)
+  Current LR: 0.000105
+  [BEST] New best validation score! Saved to: checkpoints_spec_u0\best.pt
+
+--- Epoch 2/2 ---
+  Epoch [2] Batch [25/570] Loss: 2.5209 (MSE: 1.5110, PLoss: 0.6733) (4.9 seq/s)
+  Epoch [2] Batch [50/570] Loss: 2.4954 (MSE: 1.4838, PLoss: 0.6744) (4.9 seq/s)
+  Epoch [2] Batch [75/570] Loss: 2.5034 (MSE: 1.4875, PLoss: 0.6773) (4.9 seq/s)
+  Epoch [2] Batch [100/570] Loss: 2.5082 (MSE: 1.4949, PLoss: 0.6756) (4.8 seq/s)
+  Epoch [2] Batch [125/570] Loss: 2.5184 (MSE: 1.5046, PLoss: 0.6759) (4.8 seq/s)
+  Epoch [2] Batch [150/570] Loss: 2.5148 (MSE: 1.4967, PLoss: 0.6788) (4.8 seq/s)
+  Epoch [2] Batch [175/570] Loss: 2.5016 (MSE: 1.4840, PLoss: 0.6784) (4.8 seq/s)
+  Epoch [2] Batch [200/570] Loss: 2.5031 (MSE: 1.4884, PLoss: 0.6764) (4.7 seq/s)
+  Epoch [2] Batch [225/570] Loss: 2.5019 (MSE: 1.4854, PLoss: 0.6777) (4.8 seq/s)
+  Epoch [2] Batch [250/570] Loss: 2.4948 (MSE: 1.4783, PLoss: 0.6777) (4.8 seq/s)
+  Epoch [2] Batch [275/570] Loss: 2.4921 (MSE: 1.4767, PLoss: 0.6770) (4.8 seq/s)
+  Epoch [2] Batch [300/570] Loss: 2.4930 (MSE: 1.4784, PLoss: 0.6763) (4.8 seq/s)
+  Epoch [2] Batch [325/570] Loss: 2.4938 (MSE: 1.4800, PLoss: 0.6758) (4.8 seq/s)
+  Epoch [2] Batch [350/570] Loss: 2.4937 (MSE: 1.4815, PLoss: 0.6748) (4.8 seq/s)
+  Epoch [2] Batch [375/570] Loss: 2.4965 (MSE: 1.4841, PLoss: 0.6749) (4.7 seq/s)
+  Epoch [2] Batch [400/570] Loss: 2.4947 (MSE: 1.4835, PLoss: 0.6741) (4.7 seq/s)
+  Epoch [2] Batch [425/570] Loss: 2.4975 (MSE: 1.4860, PLoss: 0.6744) (4.7 seq/s)
+  Epoch [2] Batch [450/570] Loss: 2.4992 (MSE: 1.4874, PLoss: 0.6745) (4.7 seq/s)
+  Epoch [2] Batch [475/570] Loss: 2.4994 (MSE: 1.4882, PLoss: 0.6742) (4.7 seq/s)
+  Epoch [2] Batch [500/570] Loss: 2.5023 (MSE: 1.4902, PLoss: 0.6747) (4.7 seq/s)
+  Epoch [2] Batch [525/570] Loss: 2.4980 (MSE: 1.4856, PLoss: 0.6749) (4.7 seq/s)
+  Epoch [2] Batch [550/570] Loss: 2.4965 (MSE: 1.4857, PLoss: 0.6739) (4.7 seq/s)
+  Epoch [2] Batch [570/570] Loss: 2.4970 (MSE: 1.4873, PLoss: 0.6731) (3.0 seq/s)
+Evaluating validation metric (on 150 sequences)...
+Epoch 2 Results:
+  Train Loss: 2.4970 (MSE: 1.4873, PLoss: 0.6731, time: 962.9s)
+  Val WP    : 0.4432 (t0: 0.4535, t1: 0.4330, time: 45.0s)
+  Current LR: 0.000010
+  [BEST] New best validation score! Saved to: checkpoints_spec_u0\best.pt
+
+============================================================
+Computing Stochastic Weight Averaged (SWA) Ensemble...
+Best single epoch on FULL valid: 0.4238 (t0: 0.4293, t1: 0.4183)
+SWA Ensemble WP on FULL valid: 0.4271 (t0: 0.4325, t1: 0.4218) vs Best Epoch: 0.4238
+  [SWA ENSEMBLE SELECTED] SWA outperformed single checkpoint! Saved to: checkpoints_spec_u0\best.pt
+
+============================================================
+Training Complete! Final Best Validation WP: 0.4271
+Best checkpoint saved at: checkpoints_spec_u0\best.pt
+============================================================
+
+[AUTO-EXPORT] Exporting best model to ONNX: checkpoints_spec_u0\sub\model.onnx...
+Loading checkpoint from: checkpoints_spec_u0\best.pt
+Instantiating ScaledWunderGRU:
+  Input Dim  : 456
+  Hidden Dim : 128
+  Num Layers : 2
+  Use MoE    : False
+Exporting to ONNX: checkpoints_spec_u0\sub\model.onnx (Opset 17)...
+E:\wnn_starter_pack\wnn_connectome_starterpack\src\model.py:246: TracerWarning: Converting a tensor to a Python float might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  if float(self.norm_clip) > 0:
+E:\wnn_starter_pack\wnn_connectome_starterpack\wnn_env\Lib\site-packages\torch\onnx\symbolic_opset9.py:4277: UserWarning: Exporting a model to ONNX with a batch_size other than 1, with a variable length with GRU can cause an error when running the ONNX model with a different batch size. Make sure to save the model with a batch size of 1, or define the initial states (h0/c0) as inputs of the model. 
+  warnings.warn(
+[SUCCESS] ONNX model exported cleanly! File size: 1.06 MB (Budget: <= 20 MB)
+
+Verifying numerical parity between PyTorch and ONNX Runtime...
+Max absolute discrepancy:
+  Prediction  : 1.79e-07
+  Next Hidden0: 1.31e-06
+  Next Hidden1: 1.48e-06
+[SUCCESS] Full numerical parity verified!
+
+[AUTO-PACKAGE] Packaging verified submission archive: checkpoints_spec_u0/sub.zip...
+============================================================
+      Wunder RNN Challenge -- Submission Packager
+============================================================
+Testing submission/solution.py locally...
+[ERROR] Verification failed on solution.py: cannot reshape array of size 112 into shape (1,1,456)
+Traceback (most recent call last):
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\src\package_submission.py", line 62, in package_submission
+    dummy_pred = predictor.predict(dummy_point)
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\checkpoints_spec_u0\sub\solution.py", line 235, in predict
+    "features": feat.reshape(1, 1, self.input_dim),
+                ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+ValueError: cannot reshape array of size 112 into shape (1,1,456)

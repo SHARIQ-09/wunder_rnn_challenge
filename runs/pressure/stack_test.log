@@ -1,0 +1,6 @@
+[raw_ev_ema] checkpoints_raw_ev_ema_s21/best.pt: rows fit 60257 test 62475
+GRU alone                                            t0 0.6738  t1 0.6991  WP 0.6865
+XGB on GRU prediction only                           t0 0.6673  t1 0.6890  WP 0.6782  (trees 155/455, change -0.0083)
+XGB on GRU memory (128) + prediction                 t0 0.6642  t1 0.6823  WP 0.6732  (trees 50/62, change -0.0132)
+XGB on memory + prediction + raw row                 t0 0.6592  t1 0.6794  WP 0.6693  (trees 57/66, change -0.0172)
+XGB correcting GRU (starts from GRU pred): memory+raw t0 0.6746  t1 0.6994  WP 0.6870  (trees 3/7, change +0.0005)

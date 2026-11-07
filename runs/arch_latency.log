@@ -1,0 +1,9 @@
+v5: H128 x2            ORT call median  155.3 us   ratio vs v5 ORT 1.00
+H160 x2                ORT call median  207.8 us   ratio vs v5 ORT 1.34
+H192 x2                ORT call median  248.4 us   ratio vs v5 ORT 1.60
+H256 x2                ORT call median  313.3 us   ratio vs v5 ORT 2.02
+H128 x3                ORT call median  234.8 us   ratio vs v5 ORT 1.51
+H96 x2                 ORT call median  137.3 us   ratio vs v5 ORT 0.88
+2x ensemble H128 x2    ORT call median  302.9 us   ratio vs v5 ORT 1.95
+2x ensemble H96 x2     ORT call median  242.4 us   ratio vs v5 ORT 1.56
+feature extraction per step: 40.4 us

@@ -1,0 +1,112 @@
+============================================================
+[TRAINING] Wunder RNN Challenge -- Scaled Training Pipeline
+============================================================
+Device         : cuda (NVIDIA GeForce RTX 3070 Laptop GPU)
+Mixed Precision: True (fp16)
+Batch Size     : 8 sequences in parallel
+Chunk Size     : 2048 timesteps per BPTT unroll
+Input Dim      : 144 raw features
+GRU Capacity   : 2 layers x 128 hidden units (Residuals + LayerNorm)
+Learning Rate  : 0.0002 (AdamW + Cosine Decay)
+Loss Function  : HybridLoss (MSE: 1.0, Pearson: 1.5)
+Save Path      : runs\mask_plain
+============================================================
+Training Set   : 1,400 sequences available
+Validation Set : 473 sequences available (473 used per epoch)
+Model Parameters: 234,498 (~0.89 MB f32)
+MoE Gated Experts: False
+[RESUME] Loaded checkpoint from checkpoints_5epoch/best_model_5ep.pt (prior WP: 0.6785, reset_epoch=True)
+[NORM] Installed feature standardization (fold_into_input=True, clip=0.0)
+
+Starting training loop...
+
+--- Epoch 1/3 ---
+  Epoch [1] Batch [25/175] Loss: 1.9199 (MSE: 1.1214, PLoss: 0.5323) (2.9 seq/s)
+  Epoch [1] Batch [50/175] Loss: 1.8665 (MSE: 1.0810, PLoss: 0.5237) (3.0 seq/s)
+  Epoch [1] Batch [75/175] Loss: 1.8528 (MSE: 1.0747, PLoss: 0.5187) (3.0 seq/s)
+  Epoch [1] Batch [100/175] Loss: 1.8440 (MSE: 1.0687, PLoss: 0.5168) (3.1 seq/s)
+  Epoch [1] Batch [125/175] Loss: 1.8495 (MSE: 1.0733, PLoss: 0.5174) (3.2 seq/s)
+  Epoch [1] Batch [150/175] Loss: 1.8503 (MSE: 1.0722, PLoss: 0.5187) (3.2 seq/s)
+  Epoch [1] Batch [175/175] Loss: 1.8495 (MSE: 1.0743, PLoss: 0.5168) (3.2 seq/s)
+Evaluating validation metric (on -1 sequences)...
+Epoch 1 Results:
+  Train Loss: 1.8495 (MSE: 1.0743, PLoss: 0.5168, time: 441.5s)
+  Val WP    : 0.6763 (t0: 0.6656, t1: 0.6869, time: 147.0s)
+  Current LR: 0.000152
+  [BEST] New best validation score! Saved to: runs\mask_plain\best.pt
+
+--- Epoch 2/3 ---
+  Epoch [2] Batch [25/175] Loss: 1.7825 (MSE: 1.0338, PLoss: 0.4992) (3.1 seq/s)
+  Epoch [2] Batch [50/175] Loss: 1.8203 (MSE: 1.0513, PLoss: 0.5127) (3.3 seq/s)
+  Epoch [2] Batch [75/175] Loss: 1.8046 (MSE: 1.0440, PLoss: 0.5071) (3.5 seq/s)
+  Epoch [2] Batch [100/175] Loss: 1.8127 (MSE: 1.0493, PLoss: 0.5090) (3.8 seq/s)
+  Epoch [2] Batch [125/175] Loss: 1.8057 (MSE: 1.0480, PLoss: 0.5051) (4.1 seq/s)
+  Epoch [2] Batch [150/175] Loss: 1.8113 (MSE: 1.0545, PLoss: 0.5045) (4.3 seq/s)
+  Epoch [2] Batch [175/175] Loss: 1.8191 (MSE: 1.0588, PLoss: 0.5068) (4.5 seq/s)
+Evaluating validation metric (on -1 sequences)...
+Epoch 2 Results:
+  Train Loss: 1.8191 (MSE: 1.0588, PLoss: 0.5068, time: 308.2s)
+  Val WP    : 0.6797 (t0: 0.6699, t1: 0.6895, time: 98.3s)
+  Current LR: 0.000058
+  [BEST] New best validation score! Saved to: runs\mask_plain\best.pt
+
+--- Epoch 3/3 ---
+  Epoch [3] Batch [25/175] Loss: 1.7593 (MSE: 1.0268, PLoss: 0.4883) (6.4 seq/s)
+  Epoch [3] Batch [50/175] Loss: 1.7918 (MSE: 1.0440, PLoss: 0.4986) (6.5 seq/s)
+  Epoch [3] Batch [75/175] Loss: 1.7865 (MSE: 1.0434, PLoss: 0.4953) (6.5 seq/s)
+  Epoch [3] Batch [100/175] Loss: 1.7797 (MSE: 1.0373, PLoss: 0.4949) (6.5 seq/s)
+  Epoch [3] Batch [125/175] Loss: 1.7928 (MSE: 1.0425, PLoss: 0.5002) (6.4 seq/s)
+  Epoch [3] Batch [150/175] Loss: 1.7976 (MSE: 1.0470, PLoss: 0.5004) (6.4 seq/s)
+  Epoch [3] Batch [175/175] Loss: 1.7966 (MSE: 1.0487, PLoss: 0.4986) (6.4 seq/s)
+Evaluating validation metric (on -1 sequences)...
+Epoch 3 Results:
+  Train Loss: 1.7966 (MSE: 1.0487, PLoss: 0.4986, time: 218.6s)
+  Val WP    : 0.6784 (t0: 0.6681, t1: 0.6888, time: 101.3s)
+  Current LR: 0.000010
+
+============================================================
+Computing Stochastic Weight Averaged (SWA) Ensemble...
+Best single epoch on FULL valid: 0.6797 (t0: 0.6699, t1: 0.6895)
+SWA Ensemble WP on FULL valid: 0.6787 (t0: 0.6684, t1: 0.6889) vs Best Epoch: 0.6797
+  [INFO] Single best checkpoint retained.
+
+============================================================
+Training Complete! Final Best Validation WP: 0.6797
+Best checkpoint saved at: runs\mask_plain\best.pt
+============================================================
+
+[AUTO-EXPORT] Exporting best model to ONNX: runs\mask_plain\sub\model.onnx...
+Loading checkpoint from: runs\mask_plain\best.pt
+Instantiating ScaledWunderGRU:
+  Input Dim  : 144
+  Hidden Dim : 128
+  Num Layers : 2
+  Use MoE    : False
+Exporting to ONNX: runs\mask_plain\sub\model.onnx (Opset 17)...
+E:\wnn_starter_pack\wnn_connectome_starterpack\src\model.py:173: TracerWarning: Converting a tensor to a Python float might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  if float(self.norm_clip) > 0:
+E:\wnn_starter_pack\wnn_connectome_starterpack\wnn_env\Lib\site-packages\torch\onnx\symbolic_opset9.py:4277: UserWarning: Exporting a model to ONNX with a batch_size other than 1, with a variable length with GRU can cause an error when running the ONNX model with a different batch size. Make sure to save the model with a batch size of 1, or define the initial states (h0/c0) as inputs of the model. 
+  warnings.warn(
+[SUCCESS] ONNX model exported cleanly! File size: 0.90 MB (Budget: <= 20 MB)
+
+Verifying numerical parity between PyTorch and ONNX Runtime...
+Max absolute discrepancy:
+  Prediction  : 5.96e-07
+  Next Hidden0: 1.13e-06
+  Next Hidden1: 6.56e-07
+[SUCCESS] Full numerical parity verified!
+
+[AUTO-PACKAGE] Packaging verified submission archive: runs/mask_plain/sub.zip...
+============================================================
+      Wunder RNN Challenge -- Submission Packager
+============================================================
+Testing submission/solution.py locally...
+  [SUCCESS] predict(data_point) output shape: (2,), values: [-0.20308846 -0.7906572 ]
+
+Creating submission archive: runs\mask_plain\sub.zip...
+  Added: solution.py (0.01 MB)
+  Added: model.onnx (0.90 MB)
+
+Final Archive Size: 0.84 MB / 20.0 MB limit
+[SUCCESS] Submission package verified and ready for upload!
+============================================================

@@ -1,0 +1,11 @@
+rows fit 60257 test 62475
+GRU A alone (v144 norm_ft)                   t0 0.6767  t1 0.7045  WP 0.6906
+GRU B alone (raw_ev_ema)                     t0 0.6738  t1 0.6991  WP 0.6865
+50/50 average (current platform best)        t0 0.6786  t1 0.7050  WP 0.6918
+best fixed weights on A (t0 0.45, t1 0.60)   t0 0.6784  t1 0.7054  WP 0.6919
+gate from market state (bursts/liquidity/shocks) t0 0.6787  t1 0.7050  WP 0.6919
+    gate weight on A: mean t0 0.50 t1 0.51 | spread (std) t0 0.009 t1 0.006 | epochs 16 | change vs 50/50 +0.0001
+gate from both GRU memories (256)            t0 0.6787  t1 0.7051  WP 0.6919
+    gate weight on A: mean t0 0.51 t1 0.52 | spread (std) t0 0.020 t1 0.017 | epochs 16 | change vs 50/50 +0.0001
+gate from memories + market state            t0 0.6788  t1 0.7052  WP 0.6920
+    gate weight on A: mean t0 0.51 t1 0.52 | spread (std) t0 0.018 t1 0.016 | epochs 16 | change vs 50/50 +0.0002

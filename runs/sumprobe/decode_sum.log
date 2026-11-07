@@ -1,0 +1,17 @@
+== Structure of t0+t1 (train, 200 seqs, all required rows) ==
+group 0: mean -0.658 std 0.613 share>0 0.0562 share=0 0.0355 distinct 76 smallest steps [0.0128 0.0271 0.0271] median step 0.2413
+group 1: mean -0.544 std 0.669 share>0 0.0775 share=0 0.0512 distinct 26 smallest steps [0.4685 0.4685 0.4685] median step 0.4685
+group 2: mean -0.091 std 0.952 share>0 0.2314 share=0 0.0354 distinct 97 smallest steps [0.1254 0.1254 0.1254] median step 0.1254
+sum changes on 0.127 of rows; of those, 1.000 are on i0 price updates
+LightGBM rounds 400
+top features (index in raw_ev_ema): [3, 14, 15, 0, 7, 11, 2, 16, 13, 31] [0.076, 0.054, 0.046, 0.03, 0.027, 0.024, 0.02, 0.018, 0.016, 0.013]
+
+== Valid ==
+all: corr with true sum: A+B 0.4902  decoded 0.5185 | R2 A+B -0.0437 decoded 0.2688
+group 0: corr with true sum: A+B 0.4677  decoded 0.4912 | R2 A+B -0.4610 decoded 0.2370
+group 1: corr with true sum: A+B 0.2544  decoded 0.2846 | R2 A+B -0.0614 decoded -0.0116
+group 2: corr with true sum: A+B 0.3989  decoded 0.3867 | R2 A+B 0.0094 decoded 0.1465
+
+Held-out blend (a, b, c fitted on one half of sequences: sum' = a*A+B sum + b*decoded + c):
+  coef [0.406 0.526 0.166]: base 0.70241 -> blended 0.69539 (oracle sum 0.71718)
+  coef [0.127 1.242 0.216]: base 0.69419 -> blended 0.68368 (oracle sum 0.73014)

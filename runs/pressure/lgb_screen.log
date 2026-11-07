@@ -1,0 +1,36 @@
+train rows 199100 valid scored rows 72142 | finite: True True
+new-feature ranges (train): min / max
+[[ -0.72  -1.16  -1.42  -1.17  -1.4   -2.85  -0.86  -0.91  -1.21  -1.3
+   -1.11  -3.47  -0.69  -1.1   -1.41  -0.9   -0.65  -0.96  -1.05  -0.68
+   -4.09  -4.43  -3.99  -8.61   0.     0.     0.     0.     0.    -4.39
+   -4.39   0.     0.     0.     0.    -7.18  -5.89  -5.89   0.     0.
+    0.   -23.95 -44.29  -9.27 -27.71  -1.9   -1.05  -0.37  -7.83]
+ [  1.12   1.35   1.01   2.36   2.17   1.62   0.9    0.92   1.34   1.2
+    1.5    1.62   1.1    0.76   0.71   2.32   1.     0.59   0.53   2.06
+    6.68   4.57   6.15   6.34  10.    50.     9.72  10.    50.     1.57
+    1.57   5.05   1.     1.     5.92   2.29   2.22   2.22  50.     9.9
+   22.    40.4   53.59  16.89  17.91   2.54   2.38   0.38   5.99]]
+raw_ev_ema 456               t0 0.6046  t1 0.6387  WP 0.6216
+slim 459                     t0 0.6090  t1 0.6380  WP 0.6235
+slim + pressure              t0 0.6152  t1 0.6291  WP 0.6222
+slim + bursts                t0 0.6091  t1 0.6382  WP 0.6236
+slim + liquidity             t0 0.6100  t1 0.6384  WP 0.6242
+slim + reversal              t0 0.6050  t1 0.6393  WP 0.6221
+slim + ALL (pressure set)    t0 0.6146  t1 0.6354  WP 0.6250
+top new features by gain share of all gain:
+  pressure2      0.0155
+  pressure22     0.0115
+  pressure18     0.0107
+  pressure19     0.0103
+  reversal5      0.0099
+  liquidity8     0.0099
+  pressure23     0.0097
+  pressure8      0.0092
+  pressure17     0.0092
+  pressure11     0.0091
+  liquidity3     0.0075
+  pressure10     0.0073
+  liquidity9     0.0072
+  liquidity1     0.0071
+  pressure1      0.0069
+new block total gain share: 0.244

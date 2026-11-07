@@ -1,0 +1,16 @@
+rows train=597300 valid=597300  sequence-split AUC (train vs valid) = 0.9294
+  i1_v18   gain_share=0.072  train_mean=-0.2633 valid_mean=-0.5630  train_std=0.6456 valid_std=0.7896
+  i0_v3    gain_share=0.048  train_mean=-1.1814 valid_mean=-1.2352  train_std=0.6295 valid_std=0.6435
+  i1_v17   gain_share=0.045  train_mean=-0.9252 valid_mean=-1.0773  train_std=0.5437 valid_std=0.5207
+  i1_v3    gain_share=0.044  train_mean=-0.8286 valid_mean=-0.9704  train_std=0.6114 valid_std=0.6131
+  i1_v15   gain_share=0.036  train_mean=-0.6085 valid_mean=-0.7122  train_std=0.6407 valid_std=0.7907
+  i0_v17   gain_share=0.030  train_mean=-1.3034 valid_mean=-1.3319  train_std=0.6157 valid_std=0.6381
+  a3       gain_share=0.029  train_mean=-0.2201 valid_mean=-0.3375  train_std=0.9602 valid_std=0.8500
+  eng27    gain_share=0.028  train_mean=+0.0007 valid_mean=+0.0008  train_std=0.0009 valid_std=0.0010
+  i1_v4    gain_share=0.028  train_mean=+0.8585 valid_mean=+1.0189  train_std=0.6977 valid_std=0.7804
+  i0_v13   gain_share=0.026  train_mean=+0.2604 valid_mean=+0.1082  train_std=0.7691 valid_std=0.8384
+  i1_v13   gain_share=0.024  train_mean=+0.2291 valid_mean=+0.0074  train_std=0.7126 valid_std=0.8780
+  i0_v11   gain_share=0.023  train_mean=-0.4653 valid_mean=-0.4533  train_std=0.6975 valid_std=0.7366
+  i1_v9    gain_share=0.022  train_mean=-0.6172 valid_mean=-0.6227  train_std=0.5836 valid_std=0.6082
+  i0_v2    gain_share=0.022  train_mean=-0.8895 valid_mean=-0.8919  train_std=0.6720 valid_std=0.7341
+  i0_v9    gain_share=0.020  train_mean=-0.9401 valid_mean=-0.9402  train_std=0.6350 valid_std=0.6553

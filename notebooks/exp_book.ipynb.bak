@@ -1,0 +1,603 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "05312776",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)]\n",
+      "e:\\wnn_starter_pack\\.venv\\Scripts\\python.exe\n"
+     ]
+    }
+   ],
+   "source": [
+    "import sys\n",
+    "\n",
+    "print(sys.version)\n",
+    "print(sys.executable)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "acf61957",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\"\"\"Writes exp_book.ipynb to the wnn_connectome_starterpack directory.\"\"\"\n",
+    "import json, pathlib\n",
+    "\n",
+    "cells = []\n",
+    "\n",
+    "def md(*lines):\n",
+    "    cells.append({\"cell_type\": \"markdown\", \"metadata\": {}, \"source\": list(lines)})\n",
+    "\n",
+    "def code(*lines):\n",
+    "    cells.append({\"cell_type\": \"code\", \"execution_count\": None, \"metadata\": {},\n",
+    "                  \"outputs\": [], \"source\": list(lines)})"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3c40b8c3",
+   "metadata": {},
+   "source": [
+    "# 🧠 Alpha Connectome (Wunder RNN) — Exploratory Data Analysis\\n,\n",
+    "**Run each cell one at a time.** Every cell is small and fast.,\n",
+    "> ⚠️ NEVER call `pd.read_parquet()` on the full files — train is **29 GB**, valid is **5.6 GB**.,\n",
+    "> Always use `ParquetFile.read_row_group(i)` to load **one sequence (20 000 rows)** at a time.\\n\",\n",
+    "--------------------------------------------------------------------------------------------------\n",
+    "\n",
+    "    \"| File | Sequences | Rows |\\n\",\n",
+    "    \"|------|----------:|-----:|\\n\",\n",
+    "    \"| `train.parquet` | 10 607 | 212 140 000 |\\n\",\n",
+    "    \"| `valid.parquet` | 1 873 | 37 460 000 |\\n\",\n",
+    "    \"| `valid_mask.parquet` | 1 873 | 37 460 000 |\\n\","
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "acfa828b",
+   "metadata": {},
+   "source": [
+    "## Cell 1 — Imports & Paths"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "75bac5aa",
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "ModuleNotFoundError",
+     "evalue": "No module named 'matplotlib'",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[31m---------------------------------------------------------------------------\u001b[39m",
+      "\u001b[31mModuleNotFoundError\u001b[39m                       Traceback (most recent call last)",
+      "\u001b[36mCell\u001b[39m\u001b[36m \u001b[39m\u001b[32mIn[3]\u001b[39m\u001b[32m, line 6\u001b[39m\n\u001b[32m      4\u001b[39m \u001b[38;5;28;01mimport\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[34;01mpandas\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[38;5;28;01mas\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[34;01mpd\u001b[39;00m\n\u001b[32m      5\u001b[39m \u001b[38;5;28;01mimport\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[34;01mpyarrow\u001b[39;00m\u001b[34;01m.\u001b[39;00m\u001b[34;01mparquet\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[38;5;28;01mas\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[34;01mpq\u001b[39;00m\n\u001b[32m----> \u001b[39m\u001b[32m6\u001b[39m \u001b[38;5;28;01mimport\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[34;01mmatplotlib\u001b[39;00m\u001b[34;01m.\u001b[39;00m\u001b[34;01mpyplot\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[38;5;28;01mas\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[34;01mplt\u001b[39;00m\n\u001b[32m      8\u001b[39m ROOT = Path(\u001b[33m'\u001b[39m\u001b[33m.\u001b[39m\u001b[33m'\u001b[39m).resolve()\n\u001b[32m      9\u001b[39m \u001b[38;5;28mprint\u001b[39m(\u001b[33m'\u001b[39m\u001b[33mROOT:\u001b[39m\u001b[33m'\u001b[39m, ROOT)\n",
+      "\u001b[31mModuleNotFoundError\u001b[39m: No module named 'matplotlib'"
+     ]
+    }
+   ],
+   "source": [
+    "import sys\n",
+    "from pathlib import Path\n",
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    "import pyarrow.parquet as pq\n",
+    "import matplotlib.pyplot as plt\n",
+    "\n",
+    "ROOT = Path('.').resolve()\n",
+    "print('ROOT:', ROOT)\n",
+    "\n",
+    "assert (ROOT / 'utils.py').exists(), 'utils.py not found — run from the pack root'\n",
+    "if str(ROOT) not in sys.path:\n",
+    "    sys.path.insert(0, str(ROOT))\n",
+    "\n",
+    "from utils import FEATURE_COLUMNS, TARGET_COLUMNS, SEQUENCE_LENGTH, WARMUP\n",
+    "\n",
+    "TRAIN_PATH = ROOT / 'datasets' / 'train.parquet'\n",
+    "VALID_PATH = ROOT / 'datasets' / 'valid.parquet'\n",
+    "MASK_PATH  = ROOT / 'datasets' / 'valid_mask.parquet'\n",
+    "\n",
+    "print(f'Features : {len(FEATURE_COLUMNS)}, Targets: {TARGET_COLUMNS}')\n",
+    "print(f'Sequence length: {SEQUENCE_LENGTH:,}, Warm-up: {WARMUP} steps')\n",
+    "print('All paths exist:', all(p.exists() for p in [TRAIN_PATH, VALID_PATH, MASK_PATH]))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "a7e06af6",
+   "metadata": {},
+   "source": [
+    "## Cell 2 — Parquet Metadata (reads headers only, no data)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "48a15e56",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "train_pf = pq.ParquetFile(TRAIN_PATH)\n",
+    "valid_pf = pq.ParquetFile(VALID_PATH)\n",
+    "mask_pf  = pq.ParquetFile(MASK_PATH)\n",
+    "\n",
+    "print('=== train.parquet ===')\n",
+    "print(f'  Row groups : {train_pf.num_row_groups:,}  (= sequences)')\n",
+    "print(f'  Columns    : {train_pf.schema_arrow.names}')\n",
+    "\n",
+    "print('\\\\n=== valid.parquet ===')\n",
+    "print(f'  Row groups : {valid_pf.num_row_groups:,}')\n",
+    "print(f'  Columns    : {valid_pf.schema_arrow.names}')\n",
+    "\n",
+    "print('\\\\n=== valid_mask.parquet ===')\n",
+    "print(f'  Row groups : {mask_pf.num_row_groups:,}')\n",
+    "print(f'  Columns    : {mask_pf.schema_arrow.names}')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b608a23d",
+   "metadata": {},
+   "source": [
+    "## Cell 3 — Load ONE training sequence (row group 0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f1457302",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Reads exactly 20 000 rows — fast\n",
+    "rg0 = train_pf.read_row_group(0).to_pandas()\n",
+    "print(f'Shape: {rg0.shape}')\n",
+    "print(f'seq_ix: {rg0[/seq_ix/].iloc[0]}')\n",
+    "print(f'step_in_seq: {rg0[/step_in_seq/].min()} → {rg0[/step_in_seq/].max()}')\n",
+    "print(f'need_prediction counts:\\\\n{rg0[/need_prediction/].value_counts()}')\n",
+    "rg0.head(3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5f329d69",
+   "metadata": {},
+   "source": [
+    "## Cell 4 — Basic stats on features (one sequence)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b866e511",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "\n",
+    "    feat = rg0[FEATURE_COLUMNS].astype('float32')\n",
+    "    print('Feature summary (first sequence):')\n",
+    "    print(feat.describe().T[['mean','std','min','max']].to_string())\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "14f6b564",
+   "metadata": {},
+   "source": [
+    "## Cell 5 — Target distribution (one training sequence)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e550143f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "    # Only look at prediction rows (step >= 99),\n",
+    "    scored = rg0[rg0['need_prediction']],\n",
+    "    print(f'Prediction rows: {laen(scored):,} out of {len(rg0):,}'),\n",
+    "    ,\n",
+    "    fig, axes = plt.subplots(1, 2, figsize=(12, 4)),\n",
+    "    for ax, col in zip(axes, ['t0', 't1']):,\n",
+    "        ax.hist(scored[col].clip(-2, 2), bins=80, color='steelblue', edgecolor='none', alpha=0.8),\n",
+    "        ax.axvline(0, color='red', lw=1, ls='--'),\n",
+    "        ax.set_title(f'{col} distribution (seq 0)'),\n",
+    "        ax.set_xlabel('value (clipped to ±2)'),\n",
+    "        ax.set_ylabel('count'),\n",
+    "    plt.tight_layout(),\n",
+    "    plt.show(),\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "505087fd",
+   "metadata": {},
+   "source": [
+    "## Cell 6 — Targets over time (one training sequence)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "cbbcba1e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "    fig, ax = plt.subplots(figsize=(14, 4)),\n",
+    "    ax.plot(scored['step_in_seq'], scored['t0'], lw=0.4, label='t0', alpha=0.8),\n",
+    "    ax.plot(scored['step_in_seq'], scored['t1'], lw=0.4, label='t1', alpha=0.8),\n",
+    "    ax.axhline(0, color='gray', lw=0.5, ls='--'),\n",
+    "    ax.set_title('t0 and t1 over time (sequence 0)'),\n",
+    "    ax.set_xlabel('step_in_seq'),\n",
+    "    ax.set_ylabel('target value'),\n",
+    "    ax.legend(),\n",
+    "    plt.tight_layout(),\n",
+    "    plt.show(),\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2688e527",
+   "metadata": {},
+   "source": [
+    "## Cell 7 — Feature groups (what columns exist)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d6fc4318",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "    groups = {},\n",
+    "    for col in FEATURE_COLUMNS:,\n",
+    "        parts = col.split('_'),\n",
+    "        prefix = parts[0] + '_' + ''.join(c for c in parts[1] if not c.isdigit()),\n",
+    "        groups.setdefault(prefix, []).append(col),\n",
+    "    ,\n",
+    "    print(f'Total features: {len(FEATURE_COLUMNS)}'),\n",
+    "    for g, cols in groups.items():,\n",
+    "        print(f'  {g:10s}: {len(cols):3d} columns  (e.g. {cols[0]}, {cols[-1]})'),"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1255c5f3",
+   "metadata": {},
+   "source": [
+    "## Cell 8 — Sample a few row groups to check variance across sequences"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4e3c8fda",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "    sample_rgs = [0, 100, 500, 1000, 5000],\n",
+    "    rows = [],\n",
+    "    for i in sample_rgs:,\n",
+    "        rg = train_pf.read_row_group(i).to_pandas(),\n",
+    "        pred = rg[rg['need_prediction']],\n",
+    "        rows.append({,\n",
+    "            'rg': i,,\n",
+    "            'seq_ix': rg['seq_ix'].iloc[0],,\n",
+    "            't0_mean': round(pred['t0'].mean(), 5),,\n",
+    "            't0_std':  round(pred['t0'].std(), 5),,\n",
+    "            't1_mean': round(pred['t1'].mean(), 5),,\n",
+    "            't1_std':  round(pred['t1'].std(), 5),,\n",
+    "        }),\n",
+    "    ,\n",
+    "    pd.DataFrame(rows).set_index('rg'),"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "bd1e1923",
+   "metadata": {},
+   "source": [
+    "## Cell 9 — Inspect the valid mask (how many rows scored per sequence?)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "308cf7e3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "    # Valid mask is ~92 MB; still use row-group iteration,\n",
+    "    scored_counts = [],\n",
+    "    for i in range(5):,\n",
+    "        rg = mask_pf.read_row_group(i).to_pandas(),\n",
+    "        scored_counts.append({,\n",
+    "            'rg': i,,\n",
+    "            'seq_ix': rg['seq_ix'].iloc[0],,\n",
+    "            'total_rows': len(rg),,\n",
+    "            'is_scored_true': int(rg['is_scored'].sum()),,\n",
+    "            'scored_pct': f\\{100*rg['is_scored'].mean():.1f}%\\,\n",
+    "        }),\n",
+    "    ,\n",
+    "    pd.DataFrame(scored_counts).set_index('rg'),"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7f9fdd7c",
+   "metadata": {},
+   "source": [
+    "## Cell 10 — Inspect baseline solution.py"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b8a62c8b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "    baseline_sol = ROOT / 'baseline' / 'solution.py',\n",
+    "    print(baseline_sol.read_text()),"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e4ab947c",
+   "metadata": {},
+   "source": [
+    "## Cell 11 — Load baseline ONNX model"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a33ad687",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "    try:,\n",
+    "        import onnxruntime as ort,\n",
+    "        sess = ort.InferenceSession(str(ROOT / 'baseline' / 'baseline.onnx')),\n",
+    "        input_name = sess.get_inputs()[0].name,\n",
+    "        print('ONNX model input :', input_name, sess.get_inputs()[0].shape),\n",
+    "        print('ONNX model output:', sess.get_outputs()[0].name, sess.get_outputs()[0].shape),\n",
+    "        HAS_ONNX = True,\n",
+    "    except ImportError:,\n",
+    "        print('onnxruntime not installed — skipping (pip install onnxruntime)'),\n",
+    "        HAS_ONNX = False,"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d259e8bd",
+   "metadata": {},
+   "source": [
+    "## Cell 12 — Run baseline on one valid sequence (requires onnxruntime)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a59d79ad",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "    if not HAS_ONNX:,\n",
+    "        print('Skip — onnxruntime not available'),\n",
+    "    else:,\n",
+    "        import pyarrow as pa,\n",
+    "        from utils import GlobalAccumulator, validate_sequence,\n",
+    "    ,\n",
+    "        rg_valid = valid_pf.read_row_group(0),\n",
+    "        seq_ix, need = validate_sequence(rg_valid),\n",
+    "    ,\n",
+    "        rg_valid_pd = rg_valid.to_pandas(),\n",
+    "        features    = rg_valid_pd[FEATURE_COLUMNS].to_numpy(dtype='float32')   # (20000, 112),\n",
+    "        targets     = rg_valid_pd[list(TARGET_COLUMNS)].to_numpy(dtype='float32'),\n",
+    "        mask_col    = rg_valid_pd['is_scored'].to_numpy(dtype=bool) & need,\n",
+    "    ,\n",
+    "        predictions = np.full((SEQUENCE_LENGTH, 2), np.nan, dtype='float32'),\n",
+    "    ,\n",
+    "        for step in range(SEQUENCE_LENGTH):,\n",
+    "            if need[step]:,\n",
+    "                x   = features[step:step+1]                         # (1, 112),\n",
+    "                out = sess.run(None, {input_name: x})[0]            # (1, 2),\n",
+    "                predictions[step] = out[0],\n",
+    "    ,\n",
+    "        acc = GlobalAccumulator(),\n",
+    "        acc.add(targets, predictions, mask_col),\n",
+    "        result = acc.result(),\n",
+    "        print(f'Baseline WP on seq 0: t0={result[\\t0\\]:.4f}, t1={result[\\t1\\]:.4f}, mean={result[\\weighted_pearson\\]:.4f}'),\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4e78f83c",
+   "metadata": {},
+   "source": [
+    "## Cell 13 — Feature–target correlations (one sequence)\n",
+    "### Which features have the highest raw correlation with t0 / t1?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b1044685",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "    pred_rows = rg0[rg0['need_prediction']].copy(),\n",
+    "    ,\n",
+    "    corr_t0 = pred_rows[FEATURE_COLUMNS].corrwith(pred_rows['t0']).abs().sort_values(ascending=False),\n",
+    "    corr_t1 = pred_rows[FEATURE_COLUMNS].corrwith(pred_rows['t1']).abs().sort_values(ascending=False),\n",
+    "    ,\n",
+    "    print('Top 10 features correlated with t0:'),\n",
+    "    print(corr_t0.head(10).to_string()),\n",
+    "    print('\\Top 10 features correlated with t1:'),\n",
+    "    print(corr_t1.head(10).to_string()),\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "54f7c5af",
+   "metadata": {},
+   "source": [
+    "## Cell 14 — NaN / Inf check (one sequence)\n",
+    "### Verify data quality before training."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6cf6ca71",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "    nan_counts = rg0[FEATURE_COLUMNS].isna().sum(),\n",
+    "    inf_counts  = (~np.isfinite(rg0[FEATURE_COLUMNS].to_numpy(dtype='float32'))).sum(axis=0),\n",
+    "    ,\n",
+    "    print(f'NaN in features : {nan_counts.sum()} total'),\n",
+    "    print(f'Inf in features : {inf_counts.sum()} total'),\n",
+    "    print(f'NaN in t0/t1    : {rg0[[\\t0\\,\\t1\\]].isna().sum().sum()}'),\n",
+    "    ,\n",
+    "    if nan_counts.sum() > 0:,\n",
+    "        print('\\Columns with NaN:'),\n",
+    "        print(nan_counts[nan_counts > 0]),"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "86f69371",
+   "metadata": {},
+   "source": [
+    "## Cell 15 — Memory usage estimate\n",
+    "### -- One sequence in float32 — how much RAM per batch?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1d32c604",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "    rows_per_seq = SEQUENCE_LENGTH        # 20 000,\n",
+    "    n_features   = len(FEATURE_COLUMNS)   # 112,\n",
+    "    n_targets    = 2,\n",
+    "    bytes_f32    = 4,\n",
+    "    ,\n",
+    "    feat_mb  = rows_per_seq * n_features * bytes_f32 / 1e6,\n",
+    "    tgt_mb   = rows_per_seq * n_targets  * bytes_f32 / 1e6,\n",
+    "    total_mb = feat_mb + tgt_mb,\n",
+    "    ,\n",
+    "    print('One sequence:'),\n",
+    "    print(f'  Features : {feat_mb:.2f} MB'),\n",
+    "    print(f'  Targets  : {tgt_mb:.2f} MB'),\n",
+    "    print(f'  Total    : {total_mb:.2f} MB'),\n",
+    "    ,\n",
+    "    for n in [1, 8, 32, 128]:,\n",
+    "        print(f'  {n:4d} seqs : {n * total_mb / 1024:.2f} GB'),"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "83bdd3ee",
+   "metadata": {},
+   "source": [
+    "\n",
+    "    -----------------------------------------------------------------------------------\n",
+    "    ## ✅ All cells done\n",
+    "    Next steps:,\n",
+    "    - `notebooks/` — look for any existing experiment notebooks,\n",
+    "    - `src/` — model code lives here,\n",
+    "    - `baseline/solution.py` — copy this as a starting template for your own model,"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "80a63165",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# ── Write file ──────────────────────────────────────────────────────────────\n",
+    "nb = {\n",
+    "    \"cells\": cells,\n",
+    "    \"metadata\": {\n",
+    "        \"kernelspec\": {\"display_name\": \"Python 3\", \"language\": \"python\", \"name\": \"python3\"},\n",
+    "        \"language_info\": {\"name\": \"python\", \"version\": \"3.10.0\"},\n",
+    "    },\n",
+    "    \"nbformat\": 4,\n",
+    "    \"nbformat_minor\": 5,\n",
+    "}\n",
+    "\n",
+    "out = pathlib.Path(r\"e:\\wnn_starter_pack\\wnn_connectome_starterpack\\exp_book.ipynb\")\n",
+    "out.write_text(json.dumps(nb, indent=1, ensure_ascii=False), encoding=\"utf-8\")\n",
+    "print(f\"Written: {out}  ({out.stat().st_size:,} bytes)\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b3e6bb39",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bfe10de1",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": ".venv",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.13.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

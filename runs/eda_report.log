@@ -1,0 +1,32 @@
+== 1. Targets (train, 150 random seqs, prediction rows)
+t0: mean=-0.2941 std=1.0036 kurtosis=10.5  quantiles 1/5/25/50/75/95/99% = [-1.971 -1.971 -0.657 -0.469  0.     1.38   3.137]
+    |t|>2 (clipped): 2.91%   exact zeros: 22.68%   top 10% rows carry 28.0% of metric weight, top 1% carry 2.8%
+    per-sequence std: min=0.338 median=0.908 max=1.845;  per-sequence mean: sd across seqs=0.1899
+t1: mean=-0.2680 std=0.9934 kurtosis=8.3  quantiles 1/5/25/50/75/95/99% = [-1.971 -1.971 -0.657 -0.469  0.     1.406  2.896]
+    |t|>2 (clipped): 2.85%   exact zeros: 22.81%   top 10% rows carry 28.4% of metric weight, top 1% carry 2.9%
+    per-sequence std: min=0.342 median=0.902 max=2.015;  per-sequence mean: sd across seqs=0.2057
+corr(t0,t1) pooled = -0.746
+
+== 2. Features
+i0_p   cols   0- 21: update freq  20.6% of steps;  share of variance BETWEEN sequences  16.1% (median over cols); typical within-seq std 0.063
+i0_v   cols  22- 43: update freq  89.8% of steps;  share of variance BETWEEN sequences  24.6% (median over cols); typical within-seq std 0.447
+i0_dp  cols  44- 47: update freq  32.8% of steps;  share of variance BETWEEN sequences   4.2% (median over cols); typical within-seq std 0.586
+i0_dv  cols  48- 51: update freq  19.3% of steps;  share of variance BETWEEN sequences   0.8% (median over cols); typical within-seq std 0.584
+i1_p   cols  52- 73: update freq  10.5% of steps;  share of variance BETWEEN sequences  18.2% (median over cols); typical within-seq std 0.068
+i1_v   cols  74- 95: update freq  47.5% of steps;  share of variance BETWEEN sequences  24.3% (median over cols); typical within-seq std 0.333
+i1_dp  cols  96- 99: update freq  23.2% of steps;  share of variance BETWEEN sequences   6.4% (median over cols); typical within-seq std 0.606
+i1_dv  cols 100-103: update freq  26.0% of steps;  share of variance BETWEEN sequences   2.4% (median over cols); typical within-seq std 0.733
+a      cols 104-111: update freq 100.0% of steps;  share of variance BETWEEN sequences  11.4% (median over cols); typical within-seq std 1.025
+mean(ask price-like) > mean(bid price-like) on 100.0% of rows (i0)
+i0 price-like: mean |corr| between columns = 0.572
+i0 price-like: top-3 principal components explain [67.3 14.4 10.3] % of variance
+i0 volume-like: top-3 principal components explain [20.3  6.9  6.7] % of variance
+
+== 3. Scoring mask (valid, all 1873 seqs)
+scored fraction of all rows: mean 9.42%; per-seq quantiles 0/10/50/90/100% = [ 0.48  2.5   7.8  17.74 59.87]%; seqs with no scored rows: 0
+scored runs: count 898542, length quantiles 10/50/90/99% = [ 1.  2.  8. 31.], single-row runs 43.9%
+gaps between runs: quantiles 10/50/90% = [ 1.  5. 81.]; first scored step median 160
+mean |t| on scored rows t0=0.716 t1=0.724  vs unscored t0=0.630 t1=0.617
+
+== 4. Train vs valid targets
+train std t0/t1 = [1.0036 0.9934]   valid std t0/t1 = [0.8723 0.8821]

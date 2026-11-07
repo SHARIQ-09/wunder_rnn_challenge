@@ -1,0 +1,12 @@
+seq 0: max |C - torch| = 1.91e-05
+seq 1: max |C - torch| = 1.22e-05
+seq 2: max |C - torch| = 8.29e-06
+WP C kernel : 0.5636918294016038
+WP torch ref: 0.5636919718105504
+C H128x2 (1 model)           35.2 us/step  ratio vs v5 0.41
+C H128x2 (2-model ens)       75.2 us/step  ratio vs v5 0.87
+C H128x2 (3-model ens)      111.1 us/step  ratio vs v5 1.29
+C H192x2                     74.9 us/step  ratio vs v5 0.87
+C H256x2                    112.6 us/step  ratio vs v5 1.30
+C H128x3                     52.3 us/step  ratio vs v5 0.61
+v5 ONNX (reference)          86.3 us/step  ratio vs v5 1.00

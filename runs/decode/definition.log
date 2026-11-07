@@ -1,0 +1,120 @@
+
+===== unit 0.6569 (targets in units; 60 train, 40 valid seqs) =====
+  (a) same price row -> same sum: 0.7543 (366 distinct rows, 795,674 repeats)
+  (a) same price row -> same diff: 0.4405 (366 distinct rows, 795,674 repeats)
+  (b) changed target at updates: 0.656
+  same update    t0 R2 +0.616 c +0.788 | t1 R2 +0.620 c +0.791 | sum R2 +0.980 c +0.990 | diff R2 +0.330 c +0.593 |
+  prev update    t0 R2 +0.536 c +0.748 | t1 R2 +0.524 c +0.745 | sum R2 +0.827 c +0.915 | diff R2 +0.293 c +0.663 |
+  row level      t0 R2 +0.043 c +0.208 | t1 R2 +0.038 c +0.203 | sum R2 +0.346 c +0.593 | diff R2 +0.022 c +0.154 |
+  future 1 st    t0 R2 +0.055 c +0.235 | t1 R2 +0.053 c +0.240 | sum R2 +0.237 c +0.499 | diff R2 +0.043 c +0.212 |
+  future 5 st    t0 R2 +0.032 c +0.178 | t1 R2 +0.028 c +0.180 | sum R2 +0.178 c +0.436 | diff R2 +0.021 c +0.150 |
+  future 20 st   t0 R2 +0.023 c +0.153 | t1 R2 +0.020 c +0.155 | sum R2 +0.105 c +0.338 | diff R2 +0.016 c +0.135 |
+  future 100 st  t0 R2 +0.023 c +0.153 | t1 R2 +0.019 c +0.152 | sum R2 +0.133 c +0.377 | diff R2 +0.014 c +0.127 |
+  future 500 st  t0 R2 +0.022 c +0.149 | t1 R2 +0.018 c +0.147 | sum R2 +0.160 c +0.411 | diff R2 +0.011 c +0.115 |
+  future 2000 st t0 R2 +0.018 c +0.136 | t1 R2 +0.017 c +0.146 | sum R2 +0.163 c +0.415 | diff R2 +0.009 c +0.103 |
+  past 1 st      t0 R2 +0.020 c +0.144 | t1 R2 +0.017 c +0.145 | sum R2 +0.238 c +0.500 | diff R2 +0.005 c +0.085 |
+  past 5 st      t0 R2 +0.038 c +0.197 | t1 R2 +0.034 c +0.197 | sum R2 +0.177 c +0.434 | diff R2 +0.027 c +0.174 |
+  past 20 st     t0 R2 +0.019 c +0.138 | t1 R2 +0.015 c +0.137 | sum R2 +0.103 c +0.336 | diff R2 +0.012 c +0.115 |
+  past 100 st    t0 R2 +0.017 c +0.132 | t1 R2 +0.015 c +0.138 | sum R2 +0.125 c +0.372 | diff R2 +0.009 c +0.104 |
+  past 500 st    t0 R2 +0.019 c +0.137 | t1 R2 +0.016 c +0.145 | sum R2 +0.165 c +0.423 | diff R2 +0.008 c +0.099 |
+  past 2000 st   t0 R2 +0.021 c +0.145 | t1 R2 +0.021 c +0.152 | sum R2 +0.183 c +0.441 | diff R2 +0.011 c +0.106 |
+  future 1 up    t0 R2 +0.455 c +0.699 | t1 R2 +0.453 c +0.697 | sum R2 +0.328 c +0.576 | diff R2 +0.462 c +0.705 |
+  future 2 up    t0 R2 +0.208 c +0.480 | t1 R2 +0.221 c +0.489 | sum R2 +0.292 c +0.543 | diff R2 +0.210 c +0.481 |
+  future 5 up    t0 R2 -0.033 c +0.126 | t1 R2 -0.031 c +0.128 | sum R2 +0.173 c +0.417 | diff R2 -0.044 c +0.104 |
+  future 20 up   t0 R2 +0.035 c +0.201 | t1 R2 +0.029 c +0.180 | sum R2 +0.178 c +0.431 | diff R2 +0.023 c +0.165 |
+  future 100 up  t0 R2 +0.005 c +0.074 | t1 R2 +0.009 c +0.102 | sum R2 +0.133 c +0.369 | diff R2 -0.001 c +0.015 |
+  past 1 up      t0 R2 +0.022 c +0.151 | t1 R2 +0.019 c +0.147 | sum R2 +0.330 c +0.579 | diff R2 +0.002 c +0.056 |
+  past 2 up      t0 R2 +0.035 c +0.189 | t1 R2 +0.035 c +0.193 | sum R2 +0.294 c +0.546 | diff R2 +0.019 c +0.147 |
+  past 5 up      t0 R2 +0.028 c +0.168 | t1 R2 +0.027 c +0.170 | sum R2 +0.121 c +0.361 | diff R2 +0.022 c +0.150 |
+  past 20 up     t0 R2 +0.004 c +0.096 | t1 R2 +0.009 c +0.112 | sum R2 +0.131 c +0.372 | diff R2 -0.001 c +0.047 |
+  past 100 up    t0 R2 +0.022 c +0.152 | t1 R2 +0.030 c +0.186 | sum R2 +0.180 c +0.432 | diff R2 +0.016 c +0.140 |
+
+===== unit 0.2413 (targets in units; 60 train, 40 valid seqs) =====
+  (a) same price row -> same sum: 0.3587 (7,960 distinct rows, 788,080 repeats)
+  (a) same price row -> same diff: 0.1483 (7,960 distinct rows, 788,080 repeats)
+  (b) changed target at updates: 0.519
+  same update    t0 R2 +0.275 c +0.525 | t1 R2 +0.308 c +0.555 | sum R2 +0.396 c +0.629 | diff R2 +0.257 c +0.507 |
+  prev update    t0 R2 +0.010 c +0.102 | t1 R2 +0.011 c +0.108 | sum R2 +0.042 c +0.206 | diff R2 +0.000 c +0.043 |
+  row level      t0 R2 +0.037 c +0.202 | t1 R2 +0.061 c +0.263 | sum R2 +0.155 c +0.394 | diff R2 +0.023 c +0.171 |
+  future 1 st    t0 R2 +0.002 c +0.094 | t1 R2 +0.009 c +0.106 | sum R2 +0.005 c +0.084 | diff R2 +0.005 c +0.103 |
+  future 5 st    t0 R2 +0.003 c +0.101 | t1 R2 +0.013 c +0.125 | sum R2 +0.017 c +0.138 | diff R2 +0.006 c +0.106 |
+  future 20 st   t0 R2 -0.000 c +0.091 | t1 R2 +0.018 c +0.142 | sum R2 +0.035 c +0.193 | diff R2 +0.002 c +0.089 |
+  future 100 st  t0 R2 -0.003 c +0.089 | t1 R2 +0.023 c +0.158 | sum R2 +0.059 c +0.249 | diff R2 -0.003 c +0.062 |
+  future 500 st  t0 R2 +0.010 c +0.133 | t1 R2 +0.039 c +0.202 | sum R2 +0.079 c +0.286 | diff R2 +0.010 c +0.122 |
+  future 2000 st t0 R2 +0.008 c +0.126 | t1 R2 +0.034 c +0.189 | sum R2 +0.076 c +0.281 | diff R2 +0.006 c +0.104 |
+  past 1 st      t0 R2 -0.006 c +0.034 | t1 R2 +0.000 c +0.050 | sum R2 +0.005 c +0.087 | diff R2 -0.005 c +0.021 |
+  past 5 st      t0 R2 -0.003 c +0.062 | t1 R2 +0.005 c +0.082 | sum R2 +0.018 c +0.144 | diff R2 -0.004 c +0.038 |
+  past 20 st     t0 R2 -0.001 c +0.082 | t1 R2 +0.012 c +0.117 | sum R2 +0.038 c +0.201 | diff R2 -0.003 c +0.051 |
+  past 100 st    t0 R2 +0.008 c +0.125 | t1 R2 +0.026 c +0.169 | sum R2 +0.061 c +0.252 | diff R2 +0.005 c +0.105 |
+  past 500 st    t0 R2 +0.015 c +0.150 | t1 R2 +0.030 c +0.181 | sum R2 +0.079 c +0.285 | diff R2 +0.008 c +0.119 |
+  past 2000 st   t0 R2 +0.016 c +0.147 | t1 R2 +0.029 c +0.177 | sum R2 +0.080 c +0.286 | diff R2 +0.008 c +0.114 |
+  future 1 up    t0 R2 +0.195 c +0.448 | t1 R2 +0.218 c +0.469 | sum R2 +0.060 c +0.248 | diff R2 +0.240 c +0.495 |
+  future 2 up    t0 R2 +0.061 c +0.261 | t1 R2 +0.080 c +0.287 | sum R2 +0.044 c +0.215 | diff R2 +0.076 c +0.285 |
+  future 5 up    t0 R2 +0.052 c +0.240 | t1 R2 +0.077 c +0.280 | sum R2 +0.060 c +0.250 | diff R2 +0.064 c +0.262 |
+  future 20 up   t0 R2 +0.006 c +0.131 | t1 R2 +0.045 c +0.215 | sum R2 +0.066 c +0.267 | diff R2 +0.014 c +0.139 |
+  future 100 up  t0 R2 +0.017 c +0.156 | t1 R2 +0.043 c +0.211 | sum R2 +0.079 c +0.287 | diff R2 +0.017 c +0.147 |
+  past 1 up      t0 R2 +0.014 c +0.139 | t1 R2 +0.017 c +0.139 | sum R2 +0.042 c +0.208 | diff R2 +0.009 c +0.116 |
+  past 2 up      t0 R2 +0.005 c +0.107 | t1 R2 +0.016 c +0.137 | sum R2 +0.039 c +0.204 | diff R2 +0.003 c +0.092 |
+  past 5 up      t0 R2 +0.007 c +0.118 | t1 R2 +0.023 c +0.159 | sum R2 +0.053 c +0.234 | diff R2 +0.005 c +0.103 |
+  past 20 up     t0 R2 +0.012 c +0.138 | t1 R2 +0.031 c +0.183 | sum R2 +0.070 c +0.269 | diff R2 +0.009 c +0.120 |
+  past 100 up    t0 R2 +0.011 c +0.142 | t1 R2 +0.029 c +0.179 | sum R2 +0.081 c +0.289 | diff R2 +0.005 c +0.109 |
+
+===== unit 0.4686 (targets in units; 60 train, 40 valid seqs) =====
+  (a) same price row -> same sum: 0.5007 (921 distinct rows, 795,119 repeats)
+  (a) same price row -> same diff: 0.2121 (921 distinct rows, 795,119 repeats)
+  (b) changed target at updates: 0.535
+  same update    t0 R2 +0.369 c +0.611 | t1 R2 +0.360 c +0.603 | sum R2 +0.658 c +0.814 | diff R2 +0.295 c +0.547 |
+  prev update    t0 R2 +0.072 c +0.270 | t1 R2 +0.067 c +0.259 | sum R2 +0.375 c +0.613 | diff R2 -0.002 c +0.041 |
+  row level      t0 R2 +0.015 c +0.123 | t1 R2 +0.004 c +0.097 | sum R2 +0.128 c +0.373 | diff R2 -0.001 c +0.026 |
+  future 1 st    t0 R2 +0.006 c +0.092 | t1 R2 +0.008 c +0.092 | sum R2 +0.016 c +0.139 | diff R2 +0.006 c +0.086 |
+  future 5 st    t0 R2 +0.004 c +0.084 | t1 R2 +0.008 c +0.090 | sum R2 +0.028 c +0.177 | diff R2 +0.004 c +0.074 |
+  future 20 st   t0 R2 +0.004 c +0.082 | t1 R2 +0.009 c +0.096 | sum R2 +0.046 c +0.222 | diff R2 +0.003 c +0.066 |
+  future 100 st  t0 R2 +0.003 c +0.076 | t1 R2 +0.006 c +0.081 | sum R2 +0.060 c +0.251 | diff R2 -0.000 c +0.035 |
+  future 500 st  t0 R2 +0.005 c +0.084 | t1 R2 +0.004 c +0.067 | sum R2 +0.062 c +0.257 | diff R2 -0.001 c +0.021 |
+  future 2000 st t0 R2 +0.004 c +0.083 | t1 R2 +0.005 c +0.076 | sum R2 +0.066 c +0.266 | diff R2 -0.001 c +0.020 |
+  past 1 st      t0 R2 -0.001 c +0.042 | t1 R2 +0.001 c +0.040 | sum R2 +0.016 c +0.140 | diff R2 -0.001 c +0.010 |
+  past 5 st      t0 R2 +0.000 c +0.055 | t1 R2 +0.002 c +0.051 | sum R2 +0.027 c +0.173 | diff R2 -0.001 c +0.020 |
+  past 20 st     t0 R2 +0.002 c +0.068 | t1 R2 +0.003 c +0.061 | sum R2 +0.041 c +0.211 | diff R2 -0.001 c +0.024 |
+  past 100 st    t0 R2 +0.003 c +0.078 | t1 R2 +0.003 c +0.060 | sum R2 +0.050 c +0.232 | diff R2 -0.001 c +0.021 |
+  past 500 st    t0 R2 +0.002 c +0.072 | t1 R2 +0.004 c +0.068 | sum R2 +0.054 c +0.242 | diff R2 -0.001 c +0.016 |
+  past 2000 st   t0 R2 +0.004 c +0.084 | t1 R2 +0.004 c +0.068 | sum R2 +0.058 c +0.250 | diff R2 -0.001 c +0.026 |
+  future 1 up    t0 R2 +0.390 c +0.625 | t1 R2 +0.367 c +0.607 | sum R2 +0.111 c +0.343 | diff R2 +0.402 c +0.634 |
+  future 2 up    t0 R2 +0.094 c +0.308 | t1 R2 +0.086 c +0.298 | sum R2 +0.102 c +0.325 | diff R2 +0.089 c +0.302 |
+  future 5 up    t0 R2 +0.095 c +0.308 | t1 R2 +0.093 c +0.308 | sum R2 +0.086 c +0.303 | diff R2 +0.095 c +0.309 |
+  future 20 up   t0 R2 -0.007 c +0.052 | t1 R2 -0.008 c +0.044 | sum R2 +0.061 c +0.257 | diff R2 -0.014 c -0.001 |
+  future 100 up  t0 R2 -0.000 c +0.053 | t1 R2 +0.002 c +0.066 | sum R2 +0.048 c +0.232 | diff R2 -0.004 c -0.000 |
+  past 1 up      t0 R2 +0.003 c +0.081 | t1 R2 -0.002 c +0.074 | sum R2 +0.113 c +0.348 | diff R2 -0.010 c +0.003 |
+  past 2 up      t0 R2 +0.007 c +0.093 | t1 R2 +0.005 c +0.086 | sum R2 +0.098 c +0.322 | diff R2 -0.002 c +0.012 |
+  past 5 up      t0 R2 +0.004 c +0.079 | t1 R2 -0.002 c +0.069 | sum R2 +0.094 c +0.316 | diff R2 -0.008 c +0.005 |
+  past 20 up     t0 R2 +0.002 c +0.064 | t1 R2 -0.001 c +0.062 | sum R2 +0.045 c +0.231 | diff R2 -0.003 c +0.010 |
+  past 100 up    t0 R2 +0.003 c +0.063 | t1 R2 -0.004 c +0.045 | sum R2 +0.043 c +0.231 | diff R2 -0.005 c -0.017 |
+
+===== unit 0.1254 (targets in units; 60 train, 40 valid seqs) =====
+  (a) same price row -> same sum: 0.3435 (46,749 distinct rows, 749,291 repeats)
+  (a) same price row -> same diff: 0.1458 (46,749 distinct rows, 749,291 repeats)
+  (b) changed target at updates: 0.505
+  same update    t0 R2 +0.273 c +0.523 | t1 R2 +0.139 c +0.382 | sum R2 +0.274 c +0.524 | diff R2 +0.185 c +0.432 |
+  prev update    t0 R2 +0.002 c +0.051 | t1 R2 +0.001 c +0.040 | sum R2 +0.004 c +0.065 | diff R2 +0.001 c +0.034 |
+  row level      t0 R2 +0.093 c +0.310 | t1 R2 +0.084 c +0.291 | sum R2 +0.141 c +0.379 | diff R2 +0.069 c +0.266 |
+  future 1 st    t0 R2 +0.009 c +0.096 | t1 R2 +0.004 c +0.067 | sum R2 +0.004 c +0.067 | diff R2 +0.007 c +0.087 |
+  future 5 st    t0 R2 +0.012 c +0.115 | t1 R2 +0.003 c +0.062 | sum R2 +0.015 c +0.125 | diff R2 +0.005 c +0.073 |
+  future 20 st   t0 R2 +0.017 c +0.136 | t1 R2 +0.005 c +0.081 | sum R2 +0.033 c +0.182 | diff R2 +0.003 c +0.062 |
+  future 100 st  t0 R2 +0.035 c +0.194 | t1 R2 +0.020 c +0.143 | sum R2 +0.054 c +0.232 | diff R2 +0.018 c +0.136 |
+  future 500 st  t0 R2 +0.055 c +0.237 | t1 R2 +0.052 c +0.229 | sum R2 +0.068 c +0.261 | diff R2 +0.048 c +0.222 |
+  future 2000 st t0 R2 +0.057 c +0.239 | t1 R2 +0.044 c +0.209 | sum R2 +0.074 c +0.273 | diff R2 +0.041 c +0.203 |
+  past 1 st      t0 R2 +0.003 c +0.056 | t1 R2 +0.001 c +0.036 | sum R2 +0.005 c +0.070 | diff R2 +0.001 c +0.035 |
+  past 5 st      t0 R2 +0.010 c +0.102 | t1 R2 +0.005 c +0.072 | sum R2 +0.014 c +0.119 | diff R2 +0.005 c +0.073 |
+  past 20 st     t0 R2 +0.022 c +0.151 | t1 R2 +0.015 c +0.124 | sum R2 +0.027 c +0.164 | diff R2 +0.015 c +0.127 |
+  past 100 st    t0 R2 +0.045 c +0.214 | t1 R2 +0.034 c +0.186 | sum R2 +0.043 c +0.208 | diff R2 +0.038 c +0.199 |
+  past 500 st    t0 R2 +0.051 c +0.226 | t1 R2 +0.039 c +0.199 | sum R2 +0.060 c +0.245 | diff R2 +0.039 c +0.198 |
+  past 2000 st   t0 R2 +0.044 c +0.210 | t1 R2 +0.046 c +0.215 | sum R2 +0.068 c +0.263 | diff R2 +0.037 c +0.192 |
+  future 1 up    t0 R2 +0.064 c +0.254 | t1 R2 +0.055 c +0.235 | sum R2 +0.017 c +0.133 | diff R2 +0.074 c +0.274 |
+  future 2 up    t0 R2 +0.044 c +0.211 | t1 R2 +0.031 c +0.180 | sum R2 +0.019 c +0.141 | diff R2 +0.044 c +0.212 |
+  future 5 up    t0 R2 +0.043 c +0.209 | t1 R2 +0.029 c +0.175 | sum R2 +0.031 c +0.180 | diff R2 +0.038 c +0.196 |
+  future 20 up   t0 R2 +0.038 c +0.197 | t1 R2 +0.025 c +0.163 | sum R2 +0.062 c +0.250 | diff R2 +0.020 c +0.146 |
+  future 100 up  t0 R2 +0.058 c +0.242 | t1 R2 +0.048 c +0.223 | sum R2 +0.072 c +0.269 | diff R2 +0.046 c +0.216 |
+  past 1 up      t0 R2 +0.007 c +0.092 | t1 R2 +0.007 c +0.089 | sum R2 +0.010 c +0.100 | diff R2 +0.006 c +0.087 |
+  past 2 up      t0 R2 +0.016 c +0.128 | t1 R2 +0.012 c +0.113 | sum R2 +0.020 c +0.142 | diff R2 +0.012 c +0.112 |
+  past 5 up      t0 R2 +0.025 c +0.160 | t1 R2 +0.019 c +0.144 | sum R2 +0.028 c +0.170 | diff R2 +0.020 c +0.144 |
+  past 20 up     t0 R2 +0.042 c +0.206 | t1 R2 +0.035 c +0.189 | sum R2 +0.043 c +0.210 | diff R2 +0.037 c +0.193 |
+  past 100 up    t0 R2 +0.051 c +0.226 | t1 R2 +0.049 c +0.222 | sum R2 +0.058 c +0.246 | diff R2 +0.047 c +0.216 |

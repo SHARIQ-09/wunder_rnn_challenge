@@ -1,0 +1,15 @@
+norm stats 20s | params 290,706 | train seqs 2500
+Traceback (most recent call last):
+  File "C:\Users\Shariq\AppData\Local\Programs\Python\Python313\Lib\multiprocessing\queues.py", line 262, in _feed
+    obj = _ForkingPickler.dumps(obj)
+  File "C:\Users\Shariq\AppData\Local\Programs\Python\Python313\Lib\multiprocessing\reduction.py", line 51, in dumps
+    cls(buf, protocol).dump(obj)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\wnn_env\Lib\site-packages\torch\multiprocessing\reductions.py", line 607, in reduce_storage
+    metadata = storage._share_filename_cpu_()
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\wnn_env\Lib\site-packages\torch\storage.py", line 450, in wrapper
+    return fn(self, *args, **kwargs)
+  File "E:\wnn_starter_pack\wnn_connectome_starterpack\wnn_env\Lib\site-packages\torch\storage.py", line 529, in _share_filename_cpu_
+    return super()._share_filename_cpu_(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+RuntimeError: Couldn't open shared file mapping: <torch_3440_2639622114_66>, error code: <1455>

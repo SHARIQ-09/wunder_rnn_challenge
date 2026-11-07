@@ -1,0 +1,4 @@
+alpha=0.01: AUC with relative volumes, all 144 features = 0.8669
+  top drift features now: [('eng31', np.float64(0.058)), ('eng5', np.float64(0.049)), ('eng6', np.float64(0.045)), ('eng22', np.float64(0.041)), ('eng7', np.float64(0.04)), ('i0_dv2', np.float64(0.037)), ('eng21', np.float64(0.036)), ('a7', np.float64(0.034))]
+alpha=0.01: AUC with relative volumes, 112 raw columns only = 0.8195
+  top drift features (raw only): [('a7', np.float64(0.055)), ('i0_dv2', np.float64(0.05)), ('i0_dv1', np.float64(0.047)), ('i0_p2', np.float64(0.037)), ('i1_p18', np.float64(0.03)), ('i1_v19', np.float64(0.03)), ('i1_v12', np.float64(0.029)), ('i0_v6', np.float64(0.029))]

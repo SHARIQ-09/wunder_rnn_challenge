@@ -1,0 +1,17 @@
+runs/screen/ctrl_h128x2/best.pt  FULL-VALID WP=0.665518 t0=0.661364 t1=0.669672 rows=3528273
+runs/screen/h192x2/best.pt  FULL-VALID WP=0.664326 t0=0.661047 t1=0.667604 rows=3528273
+runs/screen/h128x3/best.pt  FULL-VALID WP=0.666105 t0=0.663716 t1=0.668495 rows=3528273
+runs/screen/h256x2/best.pt  FULL-VALID WP=0.663456 t0=0.660422 t1=0.666490 rows=3528273
+runs/screen/fs_raw_ev_ema/best.pt [raw_ev_ema]  FULL-VALID WP=0.668986 t0=0.663972 t1=0.674001 rows=3528273
+runs/screen/fs_raw/best.pt [raw]  FULL-VALID WP=0.667627 t0=0.662622 t1=0.672633 rows=3528273
+runs/screen/fs_v144_ev_ema/best.pt [v144_ev_ema]  FULL-VALID WP=0.668813 t0=0.664242 t1=0.673385 rows=3528273
+runs/screen/fs_slim/best.pt [slim]  FULL-VALID WP=0.668257 t0=0.664511 t1=0.672003 rows=3528273
+runs/screen/fs_pressure/best.pt [pressure]  FULL-VALID WP=0.670468 t0=0.665146 t1=0.675790 rows=3528273
+runs/screen/fs_slim_s7/best.pt [slim]  FULL-VALID WP=0.669370 t0=0.661823 t1=0.676918 rows=3528273
+runs/screen/fs_pressure_s7/best.pt [pressure]  FULL-VALID WP=0.666984 t0=0.657451 t1=0.676517 rows=3528273
+runs/screen/fs_raw_ev_ema_h80/best.pt [raw_ev_ema]  FULL-VALID WP=0.669459 t0=0.664698 t1=0.674220 rows=3528273
+runs/screen/fs_raw_ev_ema_mem24/best.pt [raw_ev_ema]  FULL-VALID WP=0.669156 t0=0.665451 t1=0.672861 rows=3528273
+runs/screen/fs_momentum/best.pt [momentum]  FULL-VALID WP=0.670550 t0=0.665682 t1=0.675418 rows=3528273
+runs/screen/fs_momentum_s7/best.pt [momentum]  FULL-VALID WP=0.669868 t0=0.662648 t1=0.677088 rows=3528273
+runs/screen/fs_raw_ev_ema_s7/best.pt [raw_ev_ema]  FULL-VALID WP=0.667300 t0=0.657464 t1=0.677136 rows=3528273
+runs/screen/fs_branch80_s42/best.pt [raw_ev_ema]  FULL-VALID WP=0.667922 t0=0.664280 t1=0.671563 rows=3528273
